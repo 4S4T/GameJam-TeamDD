@@ -19,6 +19,7 @@ private:
 	int mileage;
 	//“G‰æ‘œ
 	int enemy_image[3];
+	int Enemy_image[6];
 	//’Ê‚è‰ß‚¬‚½“GCOUNT
 	int enemy_count[3];
 	//ƒvƒŒƒCƒ„[

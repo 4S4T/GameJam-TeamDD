@@ -23,7 +23,7 @@ void Player::Initialize()
 	box_size = Vector2D(31.0f, 60.0f);
 	angle = 0.0f;
 	speed = 3.0f;
-	hp = 10;
+	hp = 1000;
 	fuel = 20000;
 	barrier_count = 3;
 
@@ -179,28 +179,28 @@ void Player::Movement()
 	angle = 0.0f;
 
 	//è\éöà⁄ìÆèàóù
-	if (InputControl::GetButton(XINPUT_BUTTON_DPAD_LEFT))
-	{
-		move += Vector2D(-1.0f, 0.0f);
-		angle = -DX_PI_F / 18;
-	}
-	if (InputControl::GetButton(XINPUT_BUTTON_DPAD_RIGHT))
-	{
-		move += Vector2D(1.0f, 0.0f);
-			angle = DX_PI_F / 18;
-	}
+	//if (InputControl::GetButton(XINPUT_BUTTON_DPAD_LEFT))
+	//{
+	//	move += Vector2D(-3.0f, 0.0f);
+	//	angle = -DX_PI_F / 18;
+	//}
+	//if (InputControl::GetButton(XINPUT_BUTTON_DPAD_RIGHT))
+	//{
+	//	move += Vector2D(3.0f, 0.0f);
+	//		angle = DX_PI_F / 18;
+	//}
 	if (InputControl::GetButton(XINPUT_BUTTON_DPAD_UP))
 	{
-		move += Vector2D(0.0f,-1.0f);
+		move += Vector2D(0.0f,-3.0f);
 	}
 	if (InputControl::GetButton(XINPUT_BUTTON_DPAD_DOWN))
 	{
-		move += Vector2D(0.0f, 1.0f);
+		move += Vector2D(0.0f, 3.0f);
 	}
 	location += move;
 
 	//âÊñ äOÇ…Ç¢Ç©Ç»Ç¢ÇÊÇ§Ç…êßå¿Ç∑ÇÈ
-	if ((location.x < box_size.x) || (location.x >= 640.0f - 180.0f) || (location.y < box_size.y) || (location.y >= 480.0f - box_size.y))
+	if ((location.x < box_size.x) || (location.x >= 640.0f - 180.0f) || (location.y < box_size.y) || (location.y >= 510.0f - box_size.y))
 	{
 		location -= move;
 	}

@@ -12,6 +12,10 @@ enemy(nullptr)
 		enemy_image[i] = NULL;
 		enemy_count[i] = NULL;
 	}
+	for (int i = 0; i < 6; i++)
+	{
+		Enemy_image[i] = NULL;
+	}
 }
 
 GameMainScene::~GameMainScene()
@@ -29,6 +33,7 @@ void GameMainScene::Initialize()
 	back_ground = LoadGraph("Resource/images/back.bmp");
 	barrier_image = LoadGraph("Resource/images/barrier.png");
 	int result = LoadDivGraph("Resource/images/car.png", 2, 2, 1, 14, 65, enemy_image);
+	//int Result = LoadDivGraph("Resource/images/pakupakuneko.png", 6, 6, 1, 240, 304, Enemy_image);
 
 	//ƒGƒ‰[ƒ`ƒFƒbƒN
 	if (back_ground == -1)
@@ -80,6 +85,13 @@ eSceneType GameMainScene::Update()
 				enemy[i]->Initialize();
 				break;
 			}
+			if (enemy[i] == nullptr)
+			{
+				int type = GetRand(2) % 2;
+				enemy[i] = new Enemy(type, enemy_image[type]);
+				enemy[i]->Initialize();
+				break;
+			}
 		}
 	}
 
@@ -124,8 +136,8 @@ eSceneType GameMainScene::Update()
 void GameMainScene::Draw()const
 {
 	//”wŒi‰æ‘œ‚Ì•`‰æ
-	DrawGraph(mileage, 0 % 480 - 480, back_ground, TRUE);
-	DrawGraph(mileage, 0 % 480, back_ground, TRUE);
+	DrawGraph(mileage % 480 , 0, back_ground, TRUE);
+	DrawGraph(mileage % 480 - 480, 0, back_ground, TRUE);
 
 	//“G‚Ì•`‰æ
 	for (int i = 0; i < 10; i++)
