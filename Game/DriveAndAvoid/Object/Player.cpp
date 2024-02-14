@@ -54,9 +54,6 @@ void Player::Update()
 	//移動処理
 	Movement();
 
-	//加減速処理
-	Acceleration();
-
 
 	if (InputControl::GetButtonDown(XINPUT_BUTTON_START))
 	{
@@ -205,16 +202,5 @@ void Player::Movement()
 //加減速処理
 void Player::Acceleration()
 {
-
-	//lbボタンが押されたら、減速する
-	if (InputControl::GetButtonDown(XINPUT_BUTTON_LEFT_SHOULDER) && speed > 1.0f)
-	{
-		speed -= 1.0f;
-	}
-
-	//rbボタンが押されたら、加速する
-	if (InputControl::GetButtonDown(XINPUT_BUTTON_RIGHT_SHOULDER) && speed < 10.0f)
-	{
-		speed += 1.0f;
-	}
+	speed++;
 }

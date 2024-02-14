@@ -55,11 +55,12 @@ public:
 	int GetBarriarCount()const;
 	//バリア有効か？を取得
 	bool IsBarrier()const;
+	//加速処理
+	void Acceleration();
 
 private:
 
 	//移動処理
 	void Movement();
-	//加速処理
-	void Acceleration();
+	
 };

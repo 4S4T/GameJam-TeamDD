@@ -89,11 +89,13 @@ eSceneType GameMainScene::Update()
 	if (++flame >= 60) {
 		second++;
 		flame = 0;
+		if (second % 5 == 0) {
+			player->Acceleration();
+			second = 0;
+		}
 	}
 
-	if (second % 10 == 0) {
-
-	}
+	
 
 	//“G¶¬ˆ— //ƒAƒCƒeƒ€¶¬ˆ—
 	if (mileage / 20 % 100 == 0)
