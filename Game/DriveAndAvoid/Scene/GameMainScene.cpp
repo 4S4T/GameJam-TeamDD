@@ -4,8 +4,7 @@
 #include<math.h>
 
 GameMainScene::GameMainScene() : high_score(0), back_ground(NULL), barrier_image(NULL), mileage(0), player(nullptr),
-
-enemy(nullptr), item(nullptr),item_image(NULL)
+enemy(nullptr), item(nullptr),item2(nullptr),enemy1(nullptr)
 {
 	for (int i = 0; i < 3; i++)
 	{
@@ -29,8 +28,8 @@ void GameMainScene::Initialize()
 	//画像の読み込み
 	back_ground = LoadGraph("Resource/images/back.bmp");
 	barrier_image = LoadGraph("Resource/images/barrier.png");
-	int result1 = LoadDivGraph("Resource/images/car.bmp", 3, 3, 1, 63, 120, enemy_image);
-	item_image = LoadGraph("Resource/images/car.png");
+	int result1 = LoadDivGraph("Resource/images/snake.png", 1, 1, 1, 96, 65, enemy_image);
+
 	//エラーチェック
 	if (back_ground == -1)
 	{
@@ -51,7 +50,9 @@ void GameMainScene::Initialize()
 	player = new Player;
 	enemy = new Enemy * [5];
 	//item = new Item * [10];
-	item = new Item(item_image);
+	item = new Item(0);
+	item2 = new Item2(0);
+	enemy1 = new Enemy1(0);
 
 	//オブジェクトの初期化
 	player->Initialize();
@@ -64,6 +65,15 @@ void GameMainScene::Initialize()
 	for (int i = 0; i < 10; i++)
 	{
 		item = nullptr;
+	}
+	for (int i = 0; i < 10; i++)
+	{
+		item2 = nullptr;
+	}
+
+	for (int i = 0; i < 5; i++)
+	{
+		enemy1 = nullptr;
 	}
 }
 
@@ -83,7 +93,7 @@ eSceneType GameMainScene::Update()
 		{
 			if (enemy[i] == nullptr)
 			{
-				int type = GetRand(3) % 3;
+				int type = GetRand(1) % 1;
 				enemy[i] = new Enemy(type, enemy_image[type]);
 				enemy[i]->Initialize();
 				break;
@@ -103,19 +113,40 @@ eSceneType GameMainScene::Update()
 		*/
 	}
 
-	if (mileage / 20 % 100 == 0)
+	if (mileage / 10 % 100 == 0)
 	{
 		
 			if (item == nullptr)
 			{
-				int type = item_image;
-				item = new Item(item_image);
+				item = new Item(0);
 				item->Initialize();
 				
 			}
 	}
 
+	if (mileage / 40 % 100 == 0)
+	{
 
+		if (item2 == nullptr)
+		{
+			
+			item2 = new Item2(0);
+			item2->Initialize();
+
+		}
+	}
+
+	if (mileage / 30 % 100 == 0)
+	{
+
+		if (enemy1 == nullptr)
+		{
+
+			enemy1 = new Enemy1(0);
+			enemy1->Initialize();
+
+		}
+	}
 
 	//敵の更新と当たり判定チェック
 	for (int i = 0; i < 5; i++)
@@ -170,7 +201,50 @@ eSceneType GameMainScene::Update()
 		}
 	}
 
+	if (item2 != nullptr)
+	{
+		item2->Update(player->GetSpeed());
+		if (item2->GetLocation().y >= 640.0f)
+		{
+			item2->Finalize();
+			delete item2;
+			item2 = nullptr;
+		}
+		//当たり判定の確認
+		if (IsHitCheck3(player, item2))
+		{
+			player->SetActive(true);
 
+			//ダメージ処理
+			player->DecreaseHp(+200.0f);
+			item2->Finalize();
+			delete item2;
+			item2 = nullptr;
+		}
+	}
+
+	//生ごみの更新と当たり判定チェック
+	if (enemy1 != nullptr)
+	{
+		enemy1->Update(player->GetSpeed());
+		if (enemy1->GetLocation().y >= 640.0f)
+		{
+			enemy1->Finalize();
+			delete enemy1;
+			enemy1 = nullptr;
+		}
+		//当たり判定の確認
+		if (IsHitCheck4(player, enemy1))
+		{
+			player->SetActive(true);
+
+			//ダメージ処理
+			player->DecreaseHp(-100.0f);
+			enemy1->Finalize();
+			delete enemy1;
+			enemy1 = nullptr;
+		}
+	}
 	//プレイヤーの燃料か体力が0未満なら、リザルトに遷移する
 	if (player->GetFuel() < 0.0f || player->GetHp() < 0.0f)
 	{
@@ -200,6 +274,15 @@ void GameMainScene::Draw()const
 			item->Draw();
 		}
 	
+		if (item2 != nullptr)
+		{
+			item2->Draw();
+		}
+
+		if (enemy1 != nullptr)
+		{
+			enemy1->Draw();
+		}
 
 	//プレイヤーの描画
 	player->Draw();
@@ -296,6 +379,7 @@ void GameMainScene::Finalize()
 
 	delete[] enemy;
 	delete item;
+	delete item2;
 }
 
 //現在のシーン情報を取得
@@ -364,26 +448,52 @@ bool GameMainScene::IsHitCheck2(Player* p, Item* i)
 	return ((fabsf(diff_location.x) < box_ex.x) && (fabsf(diff_location.y) < box_ex.y));
 }
 
-//bool GameMainScene::IsHitCheck(Player* p, Item* i)
-//{
-//	//プレイヤーがバリアをはっていたら、当たり判定を無視する
-//	if (p->IsBarrier())
-//	{
-//		return false;
-//	}
-//
-//	//敵情報がなければ、当たり判定を無視する
-//	if (i == nullptr)
-//	{
-//		return false;
-//	}
-//
-//	//位置情報の差分を取得
-//	Vector2D diff_location = p->GetLocation() - i->GetLocation();
-//
-//	//当たり判定サイズの大きさを取得
-//	Vector2D box_ex = p->GetBoxSize() + i->GetBoxSize();
-//
-//	//コリジョンデータより位置情報の差分が小さいなら、ヒット判定とする
-//	return ((fabsf(diff_location.x) < box_ex.x) && (fabsf(diff_location.y) < box_ex.y));
-//}
+
+
+bool GameMainScene::IsHitCheck3(Player* p, Item2*i2)
+{
+	//プレイヤーがバリアをはっていたら、当たり判定を無視する
+	if (p->IsBarrier())
+	{
+		return false;
+	}
+
+	//敵情報がなければ、当たり判定を無視する
+	if (i2 == nullptr)
+	{
+		return false;
+	}
+
+	//位置情報の差分を取得
+	Vector2D diff_location = p->GetLocation() - i2->GetLocation();
+
+	//当たり判定サイズの大きさを取得
+	Vector2D box_ex = p->GetBoxSize() + i2->GetBoxSize();
+
+	//コリジョンデータより位置情報の差分が小さいなら、ヒット判定とする
+	return ((fabsf(diff_location.x) < box_ex.x) && (fabsf(diff_location.y) < box_ex.y));
+}
+bool GameMainScene::IsHitCheck4(Player* p, Enemy1*e1)
+{
+	//プレイヤーがバリアをはっていたら、当たり判定を無視する
+	if (p->IsBarrier())
+	{
+		return false;
+	}
+
+	//敵情報がなければ、当たり判定を無視する
+	if (e1 == nullptr)
+	{
+		return false;
+	}
+
+	//位置情報の差分を取得
+	Vector2D diff_location = p->GetLocation() - e1->GetLocation();
+
+	//当たり判定サイズの大きさを取得
+	Vector2D box_ex = p->GetBoxSize() + e1->GetBoxSize();
+
+	//コリジョンデータより位置情報の差分が小さいなら、ヒット判定とする
+	return ((fabsf(diff_location.x) < box_ex.x) && (fabsf(diff_location.y) < box_ex.y));
+}
+

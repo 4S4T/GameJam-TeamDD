@@ -15,7 +15,7 @@ Item::~Item()
 void Item::Initialize()
 {
 
-	//image = LoadGraph("Resource/images/car.png", image);
+	image = LoadGraph("Resource/images/car.png", image);
 
 	//出現させるX座標パターン取得
 	float random_x = (float)(GetRand(4) * 105 + 40);
@@ -41,7 +41,7 @@ void Item::Draw() const
 {
 
 	//敵画像の描画
-	DrawRotaGraphF(location.x, location.y, 1.0, 0.0, type, TRUE);
+	DrawRotaGraphF(location.x, location.y, 1.0, 0.0, image, TRUE);
 
 }
 

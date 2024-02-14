@@ -5,6 +5,7 @@
 #include"../Object/Enemy.h"
 #include "../Object/Item.h"
 #include"../Object/Item2.h"
+#include"../Object/Enemy1.h"
 
 class GameMainScene :public SceneBase
 {
@@ -31,8 +32,8 @@ private:
 
 	//ƒAƒCƒeƒ€
 	Item* item;
-
-	int item_image;
+	Item2* item2;
+	Enemy1* enemy1;
 
 public:
 	GameMainScene();
@@ -52,4 +53,6 @@ private:
 	//“–‚½‚è”»’è
 	bool IsHitCheck(Player* p, Enemy* e);
 	bool IsHitCheck2(Player* p, Item* i);
+	bool IsHitCheck3(Player* p, Item2* i2);
+	bool IsHitCheck4(Player* p, Enemy1* e1);
 };

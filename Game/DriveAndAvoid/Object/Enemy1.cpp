@@ -1,21 +1,21 @@
-#include "Item2.h"
+#include "Enemy1.h"
 #include "DxLib.h"
 
-Item2::Item2(int type) : type(type), image(), speed(0.0f), location(0.0f), box_size(0.0f)
+Enemy1::Enemy1(int type) : type(type), image(), speed(0.0f), location(0.0f), box_size(0.0f)
 {
 
 }
 
-Item2::~Item2()
+Enemy1::~Enemy1()
 {
 
 }
 
 //初期化処理
-void Item2::Initialize()
+void Enemy1::Initialize()
 {
 
-	image = LoadGraph("Resource/images/food_maguro_saku2.png");
+	image = LoadGraph("Resource/images/gomi_namagomi.png", image);
 
 	//出現させるX座標パターン取得
 	float random_x = (float)(GetRand(4) * 105 + 40);
@@ -30,14 +30,14 @@ void Item2::Initialize()
 	speed = 1.0f; //(float)(this->type * 2);
 }
 
-void Item2::Update(float speed)
+void Enemy1::Update(float speed)
 {
 
 	//位置情報に移動量を加算する
 	location += Vector2D(0.0f, this->speed + speed);// + speed - 6);
 
 }
-void Item2::Draw() const
+void Enemy1::Draw() const
 {
 
 	//敵画像の描画
@@ -45,13 +45,13 @@ void Item2::Draw() const
 
 }
 
-void Item2::Finalize()
+void Enemy1::Finalize()
 {
 
 }
 
 //敵のタイプを取得
-int Item2::GetType() const
+int Enemy1::GetType() const
 {
 
 	return type;
@@ -59,7 +59,7 @@ int Item2::GetType() const
 }
 
 //位置情報を取得
-Vector2D Item2::GetLocation()const
+Vector2D Enemy1::GetLocation()const
 {
 
 	return location;
@@ -67,7 +67,7 @@ Vector2D Item2::GetLocation()const
 }
 
 //当たり判定の大きさ取得
-Vector2D Item2::GetBoxSize() const
+Vector2D Enemy1::GetBoxSize() const
 {
 	return box_size;
 }

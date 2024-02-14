@@ -17,6 +17,9 @@ private:
 	//メニューカーソル番号
 	int menu_cursor;
 
+	// タイトルの配列
+	int gMenu[4];
+
 public:
 	TitleScene();
 	virtual ~TitleScene();
