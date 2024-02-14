@@ -19,9 +19,10 @@ void Player::Initialize()
 {
 
 	is_active = true;
-	location = Vector2D(60.0f, 380.0f);
-	box_size = Vector2D(31.0f, 60.0f);
-	speed = 3.0f;
+	location = Vector2D(60.0f, 300.0f);
+	box_size = Vector2D(10.0f, 10.0f);
+	lane = 3;
+	speed = 1.0f;
 	hp = 1000;
 	barrier_count = 3;
 
@@ -86,7 +87,7 @@ void Player::Update()
 void Player::Draw()
 {
 	//プレイヤー画像の描画
-	DrawGraphF(location.x, location.y, image, TRUE);
+	DrawRotaGraphF(location.x, location.y, 1, 0, image, TRUE);
 
 	//バリアが生成されていたら、描画を行う
 	if (barrier != nullptr)
@@ -178,19 +179,17 @@ void Player::Movement()
 		if (lane > 0)
 		{
 			lane--;
+			location = Vector2D(60.0f, (50.0f * lane) + 150.0f);
 		}
-		//move += Vector2D(0.0f,-2.0f);
 	}
 	if (InputControl::GetButtonDown(XINPUT_BUTTON_DPAD_DOWN))
 	{
 		if (lane < 5)
 		{
 			lane++;
+			location = Vector2D(60.0f, (50.0f * lane) + 150.0f);
 		}
-		//move += Vector2D(0.0f, 2.0f);
 	}
-	//location += move;
-	location = Vector2D(60.0f, (50.0f * lane) + 100.0f);
 
 	//画面外にいかないように制限する
 	if ((location.x < box_size.x) || (location.x >= 640.0f - 180.0f) || (location.y < box_size.y) || (location.y >= 480.0f - box_size.y))
