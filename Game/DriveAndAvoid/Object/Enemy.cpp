@@ -19,20 +19,20 @@ void Enemy::Initialize()
 	float random_y = (float)(GetRand(4) * 105 + 40);
 
 	//¶¬ˆÊ’u‚ÌÝ’è
-	location = Vector2D(-50.0f, random_y);
+	location = Vector2D(550.0f, random_y);
 
 	//“–‚½‚è”»’è‚ÌÝ’è
 	box_size = Vector2D(31.0f, 60.0f);
 
 	//‘¬‚³‚ÌÝ’è
-	speed = (float)(this->type * 2);
+	speed =1.0f; //(float)(this->type * 2);
 }
 
 void Enemy::Update(float speed)
 {
 
 	//ˆÊ’uî•ñ‚ÉˆÚ“®—Ê‚ð‰ÁŽZ‚·‚é
-	location += Vector2D(0.0f, this->speed + 3);
+	location += Vector2D(this->speed + speed, 0.0f);
 
 }
 void Enemy::Draw() const

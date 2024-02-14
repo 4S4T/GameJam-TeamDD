@@ -18,10 +18,10 @@ void Enemy3::Initialize()
 	image = LoadGraph("Resource/images/unscreen-001.png", image);
 
 	//出現させるX座標パターン取得
-	float random_x = (float)(GetRand(4) * 105 + 40);
+	float random_y = (float)(GetRand(4) * 50 + 150);
 
 	//生成位置の設定
-	location = Vector2D(random_x, -50.0f);
+	location = Vector2D(550.0f, random_y);
 
 	//当たり判定の設定
 	box_size = Vector2D(31.0f, 60.0f);
@@ -34,7 +34,7 @@ void Enemy3::Update(float speed)
 {
 
 	//位置情報に移動量を加算する
-	location += Vector2D(0.0f, this->speed);// + speed - 6);
+	location -= Vector2D(this->speed+speed,0.0f );// + speed - 6);
 
 }
 void Enemy3::Draw() const
