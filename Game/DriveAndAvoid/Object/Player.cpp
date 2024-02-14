@@ -20,7 +20,7 @@ void Player::Initialize()
 
 	is_active = true;
 	location = Vector2D(60.0f, 300.0f);
-	box_size = Vector2D(10.0f, 10.0f);
+	box_size = Vector2D(box_x, box_y);
 	lane = 3;
 	speed = 1.0f;
 	hp = 1000;

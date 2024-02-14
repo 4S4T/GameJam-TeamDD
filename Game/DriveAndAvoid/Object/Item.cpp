@@ -24,7 +24,7 @@ void Item::Initialize()
 	location = Vector2D(550.0f, random_y);
 
 	//“–‚½‚è”»’è‚ÌÝ’è
-	box_size = Vector2D(31.0f, 60.0f);
+	box_size = Vector2D(25.0f, 25.0f);
 
 	//‘¬‚³‚ÌÝ’è
 	speed = 1.0f; //(float)(this->type * 2);

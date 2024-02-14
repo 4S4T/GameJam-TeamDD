@@ -16,7 +16,6 @@ private:
 	Vector2D location;
 	//“–‚½‚è”»’è‚Ì‘å‚«‚³
 	Vector2D box_size;
-
 public:
 	Item2(int type); //int handle);
 	~Item2();
