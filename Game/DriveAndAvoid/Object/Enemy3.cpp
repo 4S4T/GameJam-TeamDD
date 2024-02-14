@@ -1,21 +1,21 @@
-#include "Enemy1.h"
+#include "Enemy3.h"
 #include "DxLib.h"
 
-Enemy1::Enemy1(int type) : type(type), image(), speed(0.0f), location(0.0f), box_size(0.0f)
+Enemy3::Enemy3(int type) : type(type), image(), speed(0.0f), location(0.0f), box_size(0.0f)
 {
 
 }
 
-Enemy1::~Enemy1()
+Enemy3::~Enemy3()
 {
 
 }
 
 //初期化処理
-void Enemy1::Initialize()
+void Enemy3::Initialize()
 {
 
-	image = LoadGraph("Resource/images/gomi_namagomi.png", image);
+	image = LoadGraph("Resource/images/unscreen-001.png", image);
 
 	//出現させるX座標パターン取得
 	float random_x = (float)(GetRand(4) * 105 + 40);
@@ -30,14 +30,14 @@ void Enemy1::Initialize()
 	speed = 1.0f; //(float)(this->type * 2);
 }
 
-void Enemy1::Update(float speed)
+void Enemy3::Update(float speed)
 {
 
 	//位置情報に移動量を加算する
 	location += Vector2D(0.0f, this->speed);// + speed - 6);
 
 }
-void Enemy1::Draw() const
+void Enemy3::Draw() const
 {
 
 	//敵画像の描画
@@ -45,13 +45,13 @@ void Enemy1::Draw() const
 
 }
 
-void Enemy1::Finalize()
+void Enemy3::Finalize()
 {
 
 }
 
 //敵のタイプを取得
-int Enemy1::GetType() const
+int Enemy3::GetType() const
 {
 
 	return type;
@@ -59,7 +59,7 @@ int Enemy1::GetType() const
 }
 
 //位置情報を取得
-Vector2D Enemy1::GetLocation()const
+Vector2D Enemy3::GetLocation()const
 {
 
 	return location;
@@ -67,7 +67,7 @@ Vector2D Enemy1::GetLocation()const
 }
 
 //当たり判定の大きさ取得
-Vector2D Enemy1::GetBoxSize() const
+Vector2D Enemy3::GetBoxSize() const
 {
 	return box_size;
 }

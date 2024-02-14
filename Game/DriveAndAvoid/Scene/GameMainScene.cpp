@@ -4,7 +4,7 @@
 #include<math.h>
 
 GameMainScene::GameMainScene() : high_score(0), back_ground(NULL), barrier_image(NULL), mileage(0), player(nullptr),
-enemy(nullptr), item(nullptr),item2(nullptr),enemy1(nullptr)
+enemy(nullptr), item(nullptr),item2(nullptr),enemy1(nullptr),enemy2(nullptr),enemy3(nullptr)
 {
 	for (int i = 0; i < 3; i++)
 	{
@@ -28,7 +28,7 @@ void GameMainScene::Initialize()
 	//画像の読み込み
 	back_ground = LoadGraph("Resource/images/BackScroll_Image.png");
 	barrier_image = LoadGraph("Resource/images/barrier.png");
-	int result1 = LoadDivGraph("Resource/images/snake.png", 1, 1, 1, 96, 65, enemy_image);
+	
 
 	//エラーチェック
 	if (back_ground == -1)
@@ -53,6 +53,7 @@ void GameMainScene::Initialize()
 	item = new Item(0);
 	item2 = new Item2(0);
 	enemy1 = new Enemy1(0);
+	enemy2 = new Enemy2(0);
 
 	//オブジェクトの初期化
 	player->Initialize();
@@ -74,6 +75,10 @@ void GameMainScene::Initialize()
 	for (int i = 0; i < 5; i++)
 	{
 		enemy1 = nullptr;
+	}
+	for (int i = 0; i < 5; i++)
+	{
+		enemy2 = nullptr;
 	}
 }
 
@@ -113,7 +118,7 @@ eSceneType GameMainScene::Update()
 		*/
 	}
 
-	if (mileage / 10 % 100 == 0)
+	if (mileage / 20 % 100 == 0)
 	{
 			if (item == nullptr)
 			{
@@ -123,7 +128,7 @@ eSceneType GameMainScene::Update()
 			}
 	}
 
-	if (mileage / 40 % 100 == 0)
+	if (mileage / 20 % 100 == 0)
 	{
 
 		if (item2 == nullptr)
@@ -135,7 +140,7 @@ eSceneType GameMainScene::Update()
 		}
 	}
 
-	if (mileage / 30 % 100 == 0)
+	if (mileage / 20 % 100 == 0)
 	{
 
 		if (enemy1 == nullptr)
@@ -147,6 +152,29 @@ eSceneType GameMainScene::Update()
 		}
 	}
 
+	if (mileage / 20 % 100 == 0)
+	{
+
+		if (enemy2 == nullptr)
+		{
+
+			enemy2 = new Enemy2(0);
+			enemy2->Initialize();
+
+		}
+	}
+
+	if (mileage / 20 % 100 == 0)
+	{
+
+		if (enemy3 == nullptr)
+		{
+
+			enemy3 = new Enemy3(0);
+			enemy3->Initialize();
+
+		}
+	}
 	//敵の更新と当たり判定チェック
 	for (int i = 0; i < 5; i++)
 	{
@@ -244,6 +272,50 @@ eSceneType GameMainScene::Update()
 			enemy1 = nullptr;
 		}
 	}
+
+	if (enemy2 != nullptr)
+	{
+		enemy2->Update(player->GetSpeed());
+		if (enemy2->GetLocation().y >= 640.0f)
+		{
+			enemy2->Finalize();
+			delete enemy2;
+			enemy2 = nullptr;
+		}
+		//当たり判定の確認
+		if (IsHitCheck5(player, enemy2))
+		{
+			player->SetActive(true);
+
+			//ダメージ処理
+			player->DecreaseHp(-100.0f);
+			enemy2->Finalize();
+			delete enemy2;
+			enemy2 = nullptr;
+		}
+	}
+
+	if (enemy3 != nullptr)
+	{
+		enemy3->Update(player->GetSpeed());
+		if (enemy3->GetLocation().y >= 640.0f)
+		{
+			enemy3->Finalize();
+			delete enemy3;
+			enemy3= nullptr;
+		}
+		//当たり判定の確認
+		if (IsHitCheck6(player, enemy3))
+		{
+			player->SetActive(true);
+
+			//ダメージ処理
+			player->DecreaseHp(-100.0f);
+			enemy3->Finalize();
+			delete enemy3;
+			enemy3 = nullptr;
+		}
+	}
 	//プレイヤーの燃料か体力が0未満なら、リザルトに遷移する
 	if (player->GetHp() < 0.0f)
 	{
@@ -281,6 +353,16 @@ void GameMainScene::Draw()const
 		if (enemy1 != nullptr)
 		{
 			enemy1->Draw();
+		}
+
+		if (enemy2 != nullptr)
+		{
+			enemy2->Draw();
+		}
+
+		if (enemy3 != nullptr)
+		{
+			enemy3->Draw();
 		}
 
 	//プレイヤーの描画
@@ -489,3 +571,50 @@ bool GameMainScene::IsHitCheck4(Player* p, Enemy1*e1)
 	return ((fabsf(diff_location.x) < box_ex.x) && (fabsf(diff_location.y) < box_ex.y));
 }
 
+bool GameMainScene::IsHitCheck5(Player* p, Enemy2* e2)
+{
+	//プレイヤーがバリアをはっていたら、当たり判定を無視する
+	if (p->IsBarrier())
+	{
+		return false;
+	}
+
+	//敵情報がなければ、当たり判定を無視する
+	if (e2 == nullptr)
+	{
+		return false;
+	}
+
+	//位置情報の差分を取得
+	Vector2D diff_location = p->GetLocation() - e2->GetLocation();
+
+	//当たり判定サイズの大きさを取得
+	Vector2D box_ex = p->GetBoxSize() + e2->GetBoxSize();
+
+	//コリジョンデータより位置情報の差分が小さいなら、ヒット判定とする
+	return ((fabsf(diff_location.x) < box_ex.x) && (fabsf(diff_location.y) < box_ex.y));
+}
+
+bool GameMainScene::IsHitCheck6(Player* p, Enemy3* e3)
+{
+	//プレイヤーがバリアをはっていたら、当たり判定を無視する
+	if (p->IsBarrier())
+	{
+		return false;
+	}
+
+	//敵情報がなければ、当たり判定を無視する
+	if (e3 == nullptr)
+	{
+		return false;
+	}
+
+	//位置情報の差分を取得
+	Vector2D diff_location = p->GetLocation() - e3->GetLocation();
+
+	//当たり判定サイズの大きさを取得
+	Vector2D box_ex = p->GetBoxSize() + e3->GetBoxSize();
+
+	//コリジョンデータより位置情報の差分が小さいなら、ヒット判定とする
+	return ((fabsf(diff_location.x) < box_ex.x) && (fabsf(diff_location.y) < box_ex.y));
+}
