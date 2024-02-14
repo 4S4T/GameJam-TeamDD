@@ -18,7 +18,7 @@ void Item::Initialize()
 	image = LoadGraph("Resource/images/car.png", image);
 
 	//出現させるX座標パターン取得
-	float random_y = (float)(GetRand(4) * 105 + 40);
+	float random_y = (float)(GetRand(4) * 50 + 100);
 
 	//生成位置の設定
 	location = Vector2D(550.0f, random_y);

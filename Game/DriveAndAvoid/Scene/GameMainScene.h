@@ -35,6 +35,8 @@ private:
 	Item2* item2;
 	Enemy1* enemy1;
 
+	int flame;
+	int second;
 public:
 	GameMainScene();
 	virtual ~GameMainScene();
