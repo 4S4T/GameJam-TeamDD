@@ -2,7 +2,7 @@
 #include "../Utility/InputControl.h"
 #include "DxLib.h"
 
-Player::Player() : is_active(false), image(NULL), location(0.0f), box_size(0.0f), angle(0.0f), speed(0.0f), hp(0.0f), fuel(0.0f), barrier_count(0),
+Player::Player() : is_active(false), image(NULL), location(0.0f), box_size(0.0f), angle(0.0f), speed(0.0f), hp(0.0f), barrier_count(0),
 
 barrier(nullptr)
 {
@@ -23,8 +23,7 @@ void Player::Initialize()
 	box_size = Vector2D(31.0f, 60.0f);
 	angle = 0.0f;
 	speed = 3.0f;
-	hp = 10;
-	fuel = 20000;
+	hp = 1000;
 	barrier_count = 3;
 
 	//画像の読み込み
@@ -54,8 +53,8 @@ void Player::Update()
 		return;
 	}
 
-	//燃料の消費
-	fuel -= speed;
+	//食料ゲージの減少
+	hp--;
 
 	//移動処理
 	Movement();
@@ -66,7 +65,7 @@ void Player::Update()
 
 	if (InputControl::GetButtonDown(XINPUT_BUTTON_START))
 	{
-		is_active = false;
+		//is_active = false;
 	}
 
 	//バリア処理
@@ -145,12 +144,6 @@ Vector2D Player::GetBoxSize()const
 float Player::GetSpeed()const
 {
 	return this->speed;
-}
-
-//燃料取得処理
-float Player::GetFuel()const
-{
-	return this->fuel;
 }
 
 //体力取得処理

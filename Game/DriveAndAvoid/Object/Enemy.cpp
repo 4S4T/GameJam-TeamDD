@@ -16,10 +16,10 @@ void Enemy::Initialize()
 {
 
 	//出現させるX座標パターン取得
-	float random_x = (float)(GetRand(4) * 105 + 40);
+	float random_y = (float)(GetRand(4) * 105 + 40);
 
 	//生成位置の設定
-	location = Vector2D(random_x, -50.0f);
+	location = Vector2D(-50.0f, random_y);
 
 	//当たり判定の設定
 	box_size = Vector2D(31.0f, 60.0f);
@@ -32,7 +32,7 @@ void Enemy::Update(float speed)
 {
 
 	//位置情報に移動量を加算する
-	location += Vector2D(0.0f, this->speed + speed - 6);
+	location += Vector2D(0.0f, this->speed + 3);
 
 }
 void Enemy::Draw() const
