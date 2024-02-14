@@ -34,7 +34,7 @@ void Item2::Update(float speed)
 {
 
 	//ˆÊ’uî•ñ‚ÉˆÚ“®—Ê‚ð‰ÁŽZ‚·‚é
-	location -= Vector2D( this->speed + speed,0.0f);// + speed - 6);
+	location -= Vector2D(this->speed + speed, 0.0f);// + speed - 6);
 
 }
 void Item2::Draw() const
