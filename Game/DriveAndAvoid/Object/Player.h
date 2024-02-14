@@ -14,14 +14,14 @@ private:
 	Vector2D location;
 	//当たり判定の大きさ
 	Vector2D box_size;
-	//角度
-	float angle;
+	float box_x = 25.0f;
+	float box_y = 25.0f;
+	//現在のレーン
+	int lane;
 	//速さ
 	float speed;
 	//体力
 	float hp;
-	//燃料
-	float fuel;
 	//バリアの枚数
 	int barrier_count;
 	//バリア
@@ -51,19 +51,18 @@ public:
 	Vector2D GetBoxSize()const;
 	////速さ取得
 	float GetSpeed()const;
-	//燃料取得
-	float GetFuel()const;
 	//体力取得
 	float GetHp()const;
 	//バリアの枚数取得
 	int GetBarriarCount()const;
 	//バリア有効か？を取得
 	bool IsBarrier()const;
+	//加速処理
+	void Acceleration();
 
 private:
 
 	//移動処理
 	void Movement();
-	//加速処理
-	void Acceleration();
+	
 };

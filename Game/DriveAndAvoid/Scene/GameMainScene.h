@@ -3,30 +3,43 @@
 #include"SceneBase.h"
 #include"../Object/Player.h"
 #include"../Object/Enemy.h"
+#include "../Object/Item.h"
+#include"../Object/Item2.h"
+#include"../Object/Enemy1.h"
+#include"../Object/Enemy2.h"
+#include"../Object/Enemy3.h"
 
 class GameMainScene :public SceneBase
 {
 
 private:
 
-	//ƒnƒCƒXƒRƒA
+	//ï¿½nï¿½Cï¿½Xï¿½Rï¿½A
 	int high_score;
-	//”wŒi‰æ‘œ
+	//ï¿½wï¿½iï¿½æ‘œ
 	int back_ground;
-	//ƒoƒŠƒA‰æ‘œ
+	//ï¿½oï¿½ï¿½ï¿½Aï¿½æ‘œ
 	int barrier_image;
-	//‘–s‹——£
+	//ï¿½ï¿½ï¿½sï¿½ï¿½ï¿½ï¿½
 	int mileage;
-	//“G‰æ‘œ
+	//ï¿½Gï¿½æ‘œ
 	int enemy_image[3];
-	int Enemy_image[6];
-	//’Ê‚è‰ß‚¬‚½“GCOUNT
+	//ï¿½Ê‚ï¿½ß‚ï¿½ï¿½ï¿½ï¿½GCOUNT
 	int enemy_count[3];
-	//ƒvƒŒƒCƒ„[
+	//ï¿½vï¿½ï¿½ï¿½Cï¿½ï¿½ï¿½[
 	Player* player;
-	//“G
+	//ï¿½G
 	Enemy** enemy;
 
+	//ï¿½Aï¿½Cï¿½eï¿½ï¿½
+	Item* item;
+	Item2* item2;
+	Enemy1* enemy1;
+	Enemy2* enemy2;
+	Enemy3* enemy3;
+
+	int flame;
+	int second;
 public:
 	GameMainScene();
 	virtual ~GameMainScene();
@@ -40,8 +53,13 @@ public:
 
 private:
 
-	//ƒnƒCƒXƒRƒA“Ç‚İ‚İˆ—
+	//ï¿½nï¿½Cï¿½Xï¿½Rï¿½Aï¿½Ç‚İï¿½ï¿½İï¿½ï¿½ï¿½
 	void ReadHighScore();
-	//“–‚½‚è”»’è
+	//ï¿½ï¿½ï¿½ï¿½ï¿½è”»ï¿½ï¿½
 	bool IsHitCheck(Player* p, Enemy* e);
+	bool IsHitCheck2(Player* p, Item* i);
+	bool IsHitCheck3(Player* p, Item2* i2);
+	bool IsHitCheck4(Player* p, Enemy1* e1);
+	bool IsHitCheck5(Player* p, Enemy2* e2);
+	bool IsHitCheck6(Player* p, Enemy3* e3);
 };

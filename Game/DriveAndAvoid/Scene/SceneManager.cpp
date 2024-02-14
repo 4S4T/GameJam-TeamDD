@@ -30,6 +30,8 @@ void SceneManager::Initialize()
 		throw("ウィンドウモードで起動しませんでした\n");
 	}
 
+	SetGraphMode(640, 480, 32);
+
 	//DXライブラリの初期化
 	if (DxLib_Init() == -1)
 	{

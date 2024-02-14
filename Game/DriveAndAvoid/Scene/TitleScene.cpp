@@ -2,7 +2,8 @@
 #include "../Utility/InputControl.h"
 #include "DxLib.h"
 
-TitleScene::TitleScene() : background_image(NULL), menu_image(NULL), cursor_image(NULL), menu_cursor(0)
+TitleScene::TitleScene() : background_image(NULL), menu_image(NULL), cursor_image(NULL), 
+start_btn(NULL),rank_btn(NULL),end_btn(NULL),menu_cursor(NULL),font1(0)
 {
 
 }
@@ -16,9 +17,12 @@ TitleScene::~TitleScene()
 void TitleScene::Initialize()
 {
 	//画像の読み込み
-	background_image = LoadGraph("Resource/images/Title.bmp");
-	menu_image = LoadGraph("Resource/images/menu.bmp");
-	cursor_image = LoadGraph("Resource/images/cone.bmp");
+	background_image = LoadGraph("Resource/images/road_backimage.png");
+	start_btn = LoadGraph("Resource/images/start_BTN.png");
+	rank_btn  = LoadGraph("Resource/images/rank_BTN.png");
+	end_btn	  = LoadGraph("Resource/images/end_BTN.png");
+	cursor_image = LoadGraph("Resource/images/cat_hand.png");
+	font1 = CreateFontToHandle("Elephant", 60, 8, DX_FONTTYPE_ANTIALIASING_EDGE);
 
 	//エラーチェック
 	if (background_image == -1)
@@ -44,7 +48,7 @@ eSceneType TitleScene::Update()
 		menu_cursor++;
 
 		//一番下に到達したら、一番上にする
-		if (menu_cursor > 3)
+		if (menu_cursor > 2)
 		{
 			menu_cursor = 0;
 		}
@@ -58,7 +62,7 @@ eSceneType TitleScene::Update()
 		//一番上に到達したら、一番下にする
 		if (menu_cursor < 0)
 		{
-			menu_cursor = 3;
+			menu_cursor = 2;
 		}
 	}
 
@@ -71,8 +75,8 @@ eSceneType TitleScene::Update()
 			return eSceneType::E_MAIN;
 		case 1:
 			return eSceneType::E_RANKING_DISP;
-		case 2:
-			return eSceneType::E_HELP;
+		/*case 2:
+			return eSceneType::E_HELP;*/
 		default:
 			return eSceneType::E_END;
 
@@ -90,8 +94,15 @@ void TitleScene::Draw() const
 	DrawGraph(0, 0, background_image, FALSE);
 	//メニュー画像の描画
 	DrawGraph(120, 200, menu_image, TRUE);
+
+	DrawGraph(400, 270, start_btn, TRUE);
+	DrawGraph(400, 340, rank_btn, TRUE);
+	DrawGraph(400, 410, end_btn, TRUE);
+
 	//カーソル画像の描画
-	DrawRotaGraph(90, 220 + menu_cursor * 40, 0.7, DX_PI / 2.0, cursor_image, TRUE);
+	DrawRotaGraph(360, 300 + menu_cursor * 70, 0.8, 0, cursor_image, TRUE);
+
+	DrawStringToHandle(150, 100, "Getyu~ru", 0xffec47, font1);
 }
 
 //終了時処理
@@ -100,6 +111,9 @@ void TitleScene::Finalize()
 	//読み込んだ画像の削除
 	DeleteGraph(background_image);
 	DeleteGraph(menu_image);
+	DeleteGraph(start_btn);
+	DeleteGraph(rank_btn);
+	DeleteGraph(end_btn);
 	DeleteGraph(cursor_image);
 }
 
