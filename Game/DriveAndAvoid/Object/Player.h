@@ -14,6 +14,8 @@ private:
 	Vector2D location;
 	//当たり判定の大きさ
 	Vector2D box_size;
+	float box_x = 25.0f;
+	float box_y = 25.0f;
 	//現在のレーン
 	int lane;
 	//速さ
@@ -55,11 +57,12 @@ public:
 	int GetBarriarCount()const;
 	//バリア有効か？を取得
 	bool IsBarrier()const;
+	//加速処理
+	void Acceleration();
 
 private:
 
 	//移動処理
 	void Movement();
-	//加速処理
-	void Acceleration();
+	
 };

@@ -2,7 +2,7 @@
 
 #include"../Utility/Vector2D.h"
 
-class Item2
+class Enemy3
 {
 
 private:
@@ -16,9 +16,10 @@ private:
 	Vector2D location;
 	//“–‚½‚è”»’è‚Ì‘å‚«‚³
 	Vector2D box_size;
+
 public:
-	Item2(int type); //int handle);
-	~Item2();
+	Enemy3(int type); //int handle);
+	~Enemy3();
 
 	//‰Šú‰»ˆ—
 	void Initialize();
