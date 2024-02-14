@@ -227,7 +227,7 @@ eSceneType GameMainScene::Update()
 	if (item != nullptr)
 	{
 		item->Update(player->GetSpeed());
-		if (item->GetLocation().x <= 0.0f)
+		if (item->GetLocation().x <= -50.0f)
 		{
 			item->Finalize();
 			delete item;
@@ -249,7 +249,7 @@ eSceneType GameMainScene::Update()
 	if (item2 != nullptr)
 	{
 		item2->Update(player->GetSpeed());
-		if (item2->GetLocation().y >= 640.0f)
+		if (item2->GetLocation().x <= -50.0f)
 		{
 			item2->Finalize();
 			delete item2;
@@ -272,7 +272,7 @@ eSceneType GameMainScene::Update()
 	if (enemy1 != nullptr)
 	{
 		enemy1->Update(player->GetSpeed());
-		if (enemy1->GetLocation().y >= 640.0f)
+		if (enemy1->GetLocation().x <= -50.0f)
 		{
 			enemy1->Finalize();
 			delete enemy1;
@@ -294,7 +294,7 @@ eSceneType GameMainScene::Update()
 	if (enemy2 != nullptr)
 	{
 		enemy2->Update(player->GetSpeed());
-		if (enemy2->GetLocation().y >= 640.0f)
+		if (enemy2->GetLocation().x <= -50.0f)
 		{
 			enemy2->Finalize();
 			delete enemy2;
@@ -316,7 +316,7 @@ eSceneType GameMainScene::Update()
 	if (enemy3 != nullptr)
 	{
 		enemy3->Update(player->GetSpeed());
-		if (enemy3->GetLocation().y >= 640.0f)
+		if (enemy3->GetLocation().x <= -50.0f)
 		{
 			enemy3->Finalize();
 			delete enemy3;
@@ -527,7 +527,7 @@ bool GameMainScene::IsHitCheck2(Player* p, Item* i)
 	//“Gî•ñ‚ª‚È‚¯‚ê‚ÎA“–‚½‚è”»’è‚ğ–³‹‚·‚é
 	if (i == nullptr)
 	{
-		return true;
+		return false;
 	}
 
 	//ˆÊ’uî•ñ‚Ì·•ª‚ğæ“¾
