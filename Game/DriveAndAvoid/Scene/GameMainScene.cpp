@@ -27,7 +27,7 @@ void GameMainScene::Initialize()
 	ReadHighScore();
 
 	//‰æ‘œ‚Ì“Ç‚İ‚İ
-	back_ground = LoadGraph("Resource/images/back.bmp");
+	back_ground = LoadGraph("Resource/images/BackScroll_Image.png");
 	barrier_image = LoadGraph("Resource/images/barrier.png");
 	int result1 = LoadDivGraph("Resource/images/car.bmp", 3, 3, 1, 63, 120, enemy_image);
 	item_image = LoadGraph("Resource/images/car.png");
@@ -183,8 +183,8 @@ eSceneType GameMainScene::Update()
 void GameMainScene::Draw()const
 {
 	//”wŒi‰æ‘œ‚Ì•`‰æ
-	DrawGraph(mileage % 480 - 480, 0, back_ground, TRUE);
-	DrawGraph(mileage % 480, 0, back_ground, TRUE);
+	DrawGraph(1600 - (mileage % 1600) - 1600, 0, back_ground, TRUE);
+	DrawGraph(1600 - (mileage % 1600), 0, back_ground, TRUE);
 
 	//“G‚Ì•`‰æ
 	for (int i = 0; i < 5; i++)
