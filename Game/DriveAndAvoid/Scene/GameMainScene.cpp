@@ -109,6 +109,13 @@ eSceneType GameMainScene::Update()
 		{
 			if (enemy[i] == nullptr)
 			{
+				int type = GetRand(2) % 2;
+				enemy[i] = new Enemy(type, enemy_image[type]);
+				enemy[i]->Initialize();
+				break;
+			}
+			if (enemy[i] == nullptr)
+			{
 				int type = GetRand(1) % 1;
 				enemy[i] = new Enemy(type, enemy_image[type]);
 				enemy[i]->Initialize();
