@@ -135,6 +135,8 @@
     <ClCompile Include="Object\Barrier.cpp" />
     <ClCompile Include="Object\Enemy.cpp" />
     <ClCompile Include="Object\Enemy1.cpp" />
+    <ClCompile Include="Object\Enemy2.cpp" />
+    <ClCompile Include="Object\Enemy3.cpp" />
     <ClCompile Include="Object\Item.cpp" />
     <ClCompile Include="Object\item2.cpp" />
     <ClCompile Include="Object\Player.cpp" />
@@ -152,6 +154,8 @@
     <ClInclude Include="Object\Barrier.h" />
     <ClInclude Include="Object\Enemy.h" />
     <ClInclude Include="Object\Enemy1.h" />
+    <ClInclude Include="Object\Enemy2.h" />
+    <ClInclude Include="Object\Enemy3.h" />
     <ClInclude Include="Object\Item.h" />
     <ClInclude Include="Object\item2.h" />
     <ClInclude Include="Object\Player.h" />

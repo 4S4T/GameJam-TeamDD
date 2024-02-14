@@ -6,6 +6,8 @@
 #include "../Object/Item.h"
 #include"../Object/Item2.h"
 #include"../Object/Enemy1.h"
+#include"../Object/Enemy2.h"
+#include"../Object/Enemy3.h"
 
 class GameMainScene :public SceneBase
 {
@@ -34,6 +36,8 @@ private:
 	Item* item;
 	Item2* item2;
 	Enemy1* enemy1;
+	Enemy2* enemy2;
+	Enemy3* enemy3;
 
 	int flame;
 	int second;
@@ -57,4 +61,6 @@ private:
 	bool IsHitCheck2(Player* p, Item* i);
 	bool IsHitCheck3(Player* p, Item2* i2);
 	bool IsHitCheck4(Player* p, Enemy1* e1);
+	bool IsHitCheck5(Player* p, Enemy2* e2);
+	bool IsHitCheck6(Player* p, Enemy3* e3);
 };
