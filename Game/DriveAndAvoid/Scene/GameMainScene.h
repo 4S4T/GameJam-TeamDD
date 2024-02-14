@@ -3,6 +3,8 @@
 #include"SceneBase.h"
 #include"../Object/Player.h"
 #include"../Object/Enemy.h"
+#include "../Object/Item.h"
+#include"../Object/Item2.h"
 
 class GameMainScene :public SceneBase
 {
@@ -19,12 +21,18 @@ private:
 	int mileage;
 	//敵画像
 	int enemy_image[3];
+	
 	//通り過ぎた敵COUNT
 	int enemy_count[3];
 	//プレイヤー
 	Player* player;
 	//敵
 	Enemy** enemy;
+
+	//アイテム
+	Item* item;
+
+	int item_image;
 
 public:
 	GameMainScene();
@@ -43,4 +51,5 @@ private:
 	void ReadHighScore();
 	//当たり判定
 	bool IsHitCheck(Player* p, Enemy* e);
+	bool IsHitCheck2(Player* p, Item* i);
 };
