@@ -20,6 +20,7 @@ void TitleScene::Initialize()
 	menu_image = LoadGraph("Resource/images/menu.bmp");
 	menu_image = LoadDivGraph ("Resource/images/menu.bmp",4,1,4,195,40,gMenu);
 	cursor_image = LoadGraph("Resource/images/cat_hand.png");
+	font1 = CreateFontToHandle("Elephant", 60, 8, DX_FONTTYPE_ANTIALIASING_EDGE);
 
 	//エラーチェック
 	if (background_image == -1)
@@ -98,6 +99,8 @@ void TitleScene::Draw() const
 
 	//カーソル画像の描画
 	DrawRotaGraph(100, 320 + menu_cursor * 40, 0.7, DX_PI / 2.0, cursor_image, TRUE);
+
+	DrawStringToHandle(150, 100, "Getyu~ru", 0xffec47, font1);
 }
 
 //終了時処理

@@ -20,6 +20,9 @@ private:
 	// タイトルの配列
 	int gMenu[4];
 
+	// フォント
+	int font1;
+
 public:
 	TitleScene();
 	virtual ~TitleScene();
