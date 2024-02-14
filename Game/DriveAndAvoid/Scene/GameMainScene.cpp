@@ -76,6 +76,15 @@ eSceneType GameMainScene::Update()
 	//移動距離の更新
 	mileage += (int)player->GetSpeed() + 5;
 
+	if (++flame >= 60) {
+		second++;
+		flame = 0;
+	}
+
+	if (second % 10 == 0) {
+
+	}
+
 	//敵生成処理 //アイテム生成処理
 	if (mileage / 20 % 100 == 0)
 	{
@@ -231,8 +240,8 @@ void GameMainScene::Draw()const
 	//体力ゲージの描画
 	float fx = 510.0f;
 	float fy = 430.0f;
-	DrawFormatStringF(fx, fy, GetColor(0, 0, 0), "PLAYER HP");
-	DrawBoxAA(fx, fy + 20.0f, fx + (player->GetHp() * 100 / 1000), fy + 40.0f, GetColor(255, 0, 0), TRUE);
+	DrawFormatStringF(fx, fy, GetColor(0, 0, 0), "食料ゲージ");
+	DrawBoxAA(fx, fy + 20.0f, fx + (player->GetHp() * 100 / 1000), fy + 40.0f, GetColor(255, 182, 0), TRUE);
 	DrawBoxAA(fx, fy + 20.0f, fx + 100.0f, fy + 40.0f, GetColor(0, 0, 0), FALSE);
 }
 

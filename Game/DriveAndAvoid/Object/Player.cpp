@@ -2,7 +2,7 @@
 #include "../Utility/InputControl.h"
 #include "DxLib.h"
 
-Player::Player() : is_active(false), image(NULL), location(0.0f), box_size(0.0f), angle(0.0f), speed(0.0f), hp(0.0f), barrier_count(0),
+Player::Player() : is_active(false), image(NULL), location(0.0f), box_size(0.0f), lane(0), speed(0.0f), hp(0.0f), barrier_count(0),
 
 barrier(nullptr)
 {
@@ -19,9 +19,8 @@ void Player::Initialize()
 {
 
 	is_active = true;
-	location = Vector2D(320.0f, 380.0f);
+	location = Vector2D(60.0f, 380.0f);
 	box_size = Vector2D(31.0f, 60.0f);
-	angle = 0.0f;
 	speed = 3.0f;
 	hp = 1000;
 	barrier_count = 3;
@@ -44,12 +43,8 @@ void Player::Update()
 	if (!is_active)
 	{
 		
-		angle += DX_PI_F / 24.0f;
 		speed = 1.0f;
-		if (angle >= DX_PI_F * 4.0f)
-		{
-			is_active = true;
-		}
+
 		return;
 	}
 
@@ -94,7 +89,7 @@ void Player::Update()
 void Player::Draw()
 {
 	//プレイヤー画像の描画
-	DrawRotaGraphF(location.x, location.y, 1.0, angle, image, TRUE);
+	DrawGraphF(location.x, location.y, image, TRUE);
 
 	//バリアが生成されていたら、描画を行う
 	if (barrier != nullptr)
@@ -169,28 +164,36 @@ void Player::Movement()
 {
 
 	Vector2D move = Vector2D(0.0f);
-	angle = 0.0f;
 
 	//十字移動処理
-	if (InputControl::GetButton(XINPUT_BUTTON_DPAD_LEFT))
+	//if (InputControl::GetButton(XINPUT_BUTTON_DPAD_LEFT))
+	//{
+	//	move += Vector2D(-1.0f, 0.0f);
+	//	angle = -DX_PI_F / 18;
+	//}
+	//if (InputControl::GetButton(XINPUT_BUTTON_DPAD_RIGHT))
+	//{
+	//	move += Vector2D(1.0f, 0.0f);
+	//		angle = DX_PI_F / 18;
+	//}
+	if (InputControl::GetButtonDown(XINPUT_BUTTON_DPAD_UP))
 	{
-		move += Vector2D(-1.0f, 0.0f);
-		angle = -DX_PI_F / 18;
+		if (lane > 0)
+		{
+			lane--;
+		}
+		//move += Vector2D(0.0f,-2.0f);
 	}
-	if (InputControl::GetButton(XINPUT_BUTTON_DPAD_RIGHT))
+	if (InputControl::GetButtonDown(XINPUT_BUTTON_DPAD_DOWN))
 	{
-		move += Vector2D(1.0f, 0.0f);
-			angle = DX_PI_F / 18;
+		if (lane < 5)
+		{
+			lane++;
+		}
+		//move += Vector2D(0.0f, 2.0f);
 	}
-	if (InputControl::GetButton(XINPUT_BUTTON_DPAD_UP))
-	{
-		move += Vector2D(0.0f,-1.0f);
-	}
-	if (InputControl::GetButton(XINPUT_BUTTON_DPAD_DOWN))
-	{
-		move += Vector2D(0.0f, 1.0f);
-	}
-	location += move;
+	//location += move;
+	location = Vector2D(60.0f, (50.0f * lane) + 100.0f);
 
 	//画面外にいかないように制限する
 	if ((location.x < box_size.x) || (location.x >= 640.0f - 180.0f) || (location.y < box_size.y) || (location.y >= 480.0f - box_size.y))

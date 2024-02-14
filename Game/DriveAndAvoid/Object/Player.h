@@ -14,8 +14,8 @@ private:
 	Vector2D location;
 	//“–‚½‚è”»’è‚Ì‘å‚«‚³
 	Vector2D box_size;
-	//Šp“x
-	float angle;
+	//Œ»İ‚ÌƒŒ[ƒ“
+	int lane;
 	//‘¬‚³
 	float speed;
 	//‘Ì—Í

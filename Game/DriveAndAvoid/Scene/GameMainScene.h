@@ -34,6 +34,8 @@ private:
 
 	int item_image;
 
+	int flame;
+	int second;
 public:
 	GameMainScene();
 	virtual ~GameMainScene();
