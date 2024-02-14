@@ -2,7 +2,8 @@
 #include "../Utility/InputControl.h"
 #include "DxLib.h"
 
-TitleScene::TitleScene() : background_image(NULL), menu_image(NULL), cursor_image(NULL), menu_cursor(0)
+TitleScene::TitleScene() : background_image(NULL), menu_image(NULL), cursor_image(NULL), 
+start_btn(NULL),rank_btn(NULL),end_btn(NULL),menu_cursor(NULL),font1(0)
 {
 
 }
@@ -17,8 +18,9 @@ void TitleScene::Initialize()
 {
 	//画像の読み込み
 	background_image = LoadGraph("Resource/images/road_backimage.png");
-	menu_image = LoadGraph("Resource/images/menu.bmp");
-	menu_image = LoadDivGraph ("Resource/images/menu.bmp",4,1,4,195,40,gMenu);
+	start_btn = LoadGraph("Resource/images/start_BTN.png");
+	rank_btn  = LoadGraph("Resource/images/rank_BTN.png");
+	end_btn	  = LoadGraph("Resource/images/end_BTN.png");
 	cursor_image = LoadGraph("Resource/images/cat_hand.png");
 	font1 = CreateFontToHandle("Elephant", 60, 8, DX_FONTTYPE_ANTIALIASING_EDGE);
 
@@ -93,12 +95,12 @@ void TitleScene::Draw() const
 	//メニュー画像の描画
 	DrawGraph(120, 200, menu_image, TRUE);
 
-	DrawGraph(140, 300, gMenu[0], TRUE);
-	DrawGraph(140, 340, gMenu[1], TRUE);
-	DrawGraph(140, 380, gMenu[3], TRUE);
+	DrawGraph(400, 270, start_btn, TRUE);
+	DrawGraph(400, 340, rank_btn, TRUE);
+	DrawGraph(400, 410, end_btn, TRUE);
 
 	//カーソル画像の描画
-	DrawRotaGraph(100, 320 + menu_cursor * 40, 0.7, DX_PI / 2.0, cursor_image, TRUE);
+	DrawRotaGraph(360, 300 + menu_cursor * 70, 0.8, 0, cursor_image, TRUE);
 
 	DrawStringToHandle(150, 100, "Getyu~ru", 0xffec47, font1);
 }
@@ -109,10 +111,9 @@ void TitleScene::Finalize()
 	//読み込んだ画像の削除
 	DeleteGraph(background_image);
 	DeleteGraph(menu_image);
-	DeleteGraph(gMenu[0]);
-	DeleteGraph(gMenu[1]);
-	DeleteGraph(gMenu[2]);
-	DeleteGraph(gMenu[3]);
+	DeleteGraph(start_btn);
+	DeleteGraph(rank_btn);
+	DeleteGraph(end_btn);
 	DeleteGraph(cursor_image);
 }
 

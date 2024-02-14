@@ -17,12 +17,12 @@ private:
 	//メニューカーソル番号
 	int menu_cursor;
 
-	// タイトルの配列
-	int gMenu[4];
+	int start_btn;
+	int rank_btn;
+	int end_btn;
 
 	// フォント
 	int font1;
-
 public:
 	TitleScene();
 	virtual ~TitleScene();
