@@ -20,8 +20,6 @@ private:
 	float speed;
 	//体力
 	float hp;
-	//燃料
-	float fuel;
 	//バリアの枚数
 	int barrier_count;
 	//バリア
@@ -51,8 +49,6 @@ public:
 	Vector2D GetBoxSize()const;
 	////速さ取得
 	float GetSpeed()const;
-	//燃料取得
-	float GetFuel()const;
 	//体力取得
 	float GetHp()const;
 	//バリアの枚数取得
