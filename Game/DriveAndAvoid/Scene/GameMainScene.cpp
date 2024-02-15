@@ -280,10 +280,10 @@ void GameMainScene::Draw()const
 	DrawFormatString(510, 20, GetColor(0, 0, 0 ), "ハイスコア");
 	DrawFormatString(560, 40, GetColor(255, 255, 255), "%08d", high_score);
 
-	DrawFormatString(510, 800, GetColor(0, 0, 0), "走った距離");
-	DrawFormatString(555, 100, GetColor(255, 255, 255), "%8d", mileage / 10);
-	DrawFormatString(510, 120, GetColor(0, 0, 0), "スピード");
-	DrawFormatString(555, 140, GetColor(255, 255, 255), "%08.1f", player->GetSpeed());
+	DrawFormatString(510, 120, GetColor(0, 0, 0), "走った距離");
+	DrawFormatString(555, 140, GetColor(255, 255, 255), "%8d", mileage / 10);
+	DrawFormatString(510, 160, GetColor(0, 0, 0), "スピード");
+	DrawFormatString(555, 180, GetColor(255, 255, 255), "%08.1f", player->GetSpeed());
 
 	//バリア枚数の描画
 	for (int i = 0; i < player->GetBarriarCount(); i++)
