@@ -37,6 +37,10 @@ void TitleScene::Initialize()
 	{
 		throw("Resource/images/cone.bmpがありません/n");
 	}
+	// 音声の読込
+	cursorSE = LoadSoundMem("Resource/sounds/pi.mp3");
+	//ChangeVolumeSoundMem(250, kira);
+	ketteiSE = LoadSoundMem("Resource/sounds/pinn.mp3");
 }
 
 //更新処理
@@ -46,7 +50,7 @@ eSceneType TitleScene::Update()
 	if (InputControl::GetButtonDown(XINPUT_BUTTON_DPAD_DOWN))
 	{
 		menu_cursor++;
-
+		PlaySoundMem(cursorSE, DX_PLAYTYPE_BACK);
 		//一番下に到達したら、一番上にする
 		if (menu_cursor > 2)
 		{
@@ -58,7 +62,7 @@ eSceneType TitleScene::Update()
 	if (InputControl::GetButtonDown(XINPUT_BUTTON_DPAD_UP))
 	{
 		menu_cursor--;
-
+		PlaySoundMem(cursorSE, DX_PLAYTYPE_BACK);
 		//一番上に到達したら、一番下にする
 		if (menu_cursor < 0)
 		{
@@ -69,6 +73,7 @@ eSceneType TitleScene::Update()
 	//カーソル決定（決定した画面に遷移する）
 	if (InputControl::GetButtonDown(XINPUT_BUTTON_A))
 	{
+		PlaySoundMem(ketteiSE, DX_PLAYTYPE_BACK);
 		switch (menu_cursor)
 		{
 		case 0:

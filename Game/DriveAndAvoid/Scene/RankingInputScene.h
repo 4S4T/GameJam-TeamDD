@@ -21,6 +21,8 @@ private:
 	//カーソルY座標
 	int cursor_y;
 
+	int SE_kettei;
+	int SE_idou;
 public:
 	RankingInputScene();
 	virtual ~RankingInputScene();

@@ -12,13 +12,13 @@ Enemy1::~Enemy1()
 }
 
 //初期化処理
-void Enemy1::Initialize()
+void Enemy1::Initialize(int set_lane)
 {
 
 	image = LoadGraph("Resource/images/gomi_namagomi.png", image);
 
 	//出現させるX座標パターン取得
-	float random_y = (float)(GetRand(4) * 60 + 170);
+	float random_y = (float)(set_lane * 60 + 170);
 
 	//生成位置の設定
 	location = Vector2D(550.0f,random_y);
@@ -64,3 +64,4 @@ Vector2D Enemy1::GetBoxSize() const
 {
 	return box_size;
 }
+

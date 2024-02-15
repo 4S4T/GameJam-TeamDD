@@ -1,10 +1,10 @@
 #include"GameMainScene.h"
 #include"../Object/RankingData.h"
+#include "../Utility/InputControl.h"
 #include"DxLib.h"
 #include<math.h>
 
-GameMainScene::GameMainScene() : high_score(0), back_ground(NULL), barrier_image(NULL), mileage(0), player(nullptr),
-enemy(nullptr), item(nullptr),item2(nullptr),enemy1(nullptr),enemy2(nullptr),enemy3(nullptr)
+GameMainScene::GameMainScene() : high_score(0), back_ground(NULL), barrier_image(NULL), mileage(0), player(nullptr)
 {
 	for (int i = 0; i < 3; i++)
 	{
@@ -29,17 +29,17 @@ void GameMainScene::Initialize()
 	back_ground = LoadGraph("Resource/images/BackScroll_Image.png");
 	barrier_image = LoadGraph("Resource/images/barrier.png");
 	
-
+	//音声の読込
+	kira = LoadSoundMem("Resource/sounds/kira.mp3");
+	ChangeVolumeSoundMem(250, kira);
+	bisi = LoadSoundMem("Resource/sounds/bisi.mp3");
+	BGM = LoadSoundMem("Resource/sounds/Relay.mp3");
+	PlaySoundMem(BGM, DX_PLAYTYPE_LOOP);
 	//エラーチェック
 	if (back_ground == -1)
 	{
 		throw("Resource/images/back.bmpがありません\n");
 	}
-
-	//if (result == -1)
-	//{
-	//	throw("Resource/images/car.bmpがありません\n");
-	//}
 
 	if (barrier_image == -1)
 	{
@@ -48,372 +48,204 @@ void GameMainScene::Initialize()
 
 	//オブジェクトの生成
 	player = new Player;
-	enemy = new Enemy * [5];
 	//item_base = new Item_Base * [8];
 	//item = new Item * [10];
-	item = new Item(0);
-	item2 = new Item2(0);
-	enemy1 = new Enemy1(0);
-	enemy2 = new Enemy2(0);
 
 	//オブジェクトの初期化
 	player->Initialize();
 
-	for (int i = 0; i < 5; i++)
-	{
-		enemy[i] = nullptr;
-	}
+	item_spawn_max = 0;
+	item_spawn_rate = 0;
 
-	//for (int i = 0; i < 10; i++)
-	//{
-	//	item = nullptr;
-	//}
-	//for (int i = 0; i < 10; i++)
-	//{
-	//	item2 = nullptr;
-	//}
-
-	//for (int i = 0; i < 5; i++)
-	//{
-	//	enemy1 = nullptr;
-	//}
-	//for (int i = 0; i < 5; i++)
-	//{
-	//	enemy2 = nullptr;
-	//}
+	YagiFlg = FALSE;
 }
 
 //更新処理
 eSceneType GameMainScene::Update()
 {
-	//プレイヤーの更新
-	player->Update();
-
-	//移動距離の更新
-	mileage += (int)player->GetSpeed() + 5;
-
-	if (++flame >= 60) {
-		second++;
-		flame = 0;
-		if (second % 5 == 0) {
-			player->Acceleration();
-			second = 0;
+	if (Matatabi_Flg == TRUE) {
+		if (++Matatabi_cnt >= Matatabi_Time) {
+			Matatabi_Flg = FALSE;
 		}
 	}
 
-	
-
-	//敵生成処理 //アイテム生成処理
-	if (mileage / 20 % 100 == 0)
+	if (YagiFlg == FALSE)
 	{
-		for (int i = 0; i < 5; i++)
-		{
-			if (enemy[i] == nullptr)
-			{
-				int type = GetRand(2) % 2;
-				enemy[i] = new Enemy(type, enemy_image[type]);
-				enemy[i]->Initialize();
-				break;
-			}
-			if (enemy[i] == nullptr)
-			{
-				int type = GetRand(1) % 1;
-				enemy[i] = new Enemy(type, enemy_image[type]);
-				enemy[i]->Initialize();
-				break;
+
+
+		//プレイヤーの更新
+		player->Update();
+
+		//移動距離の更新
+		mileage += (int)player->GetSpeed() + 5;
+
+		if (++flame >= 60) {
+			second++;
+			flame = 0;
+			if (second % 5 == 0) {
+				player->Acceleration();
+				second = 0;
 			}
 		}
-		/*
-		for (int i = 0; i < 10; i++)
-		{
-			if (item == nullptr)
-			{
-				int type = item_image;
-				item = new Item(item_image);
-				item->Initialize();
-				break;
-			}
-		}
-		*/
-	}
 
-	if (mileage / 20 % 100 == 0)
-	{
-		for (int i = 0; i < 7; i++)
+		if (++item_spawn_rate >= item_spawn_max)
 		{
-			if (item_base[i] == nullptr)
+			int j = GetRand(8);
+			bool seted_lane[5] = { FALSE };
+			for (int i = 0; i < j; i++)
 			{
-				int type = GetRand(4);
-				switch (type)
+				if (item_base[i] == nullptr)
 				{
-				case 0:
-					item_base[i] = new Item(type);
-					item_base[i]->Initialize();
-					break;
-				case 1:
-					item_base[i] = new Enemy1(type);
-					item_base[i]->Initialize();
-					break;
-				case 2:
-					item_base[i] = new Item2(type);
-					item_base[i]->Initialize();
-					break;
-				case 3:
-					item_base[i] = new Enemy2(type);
-					item_base[i]->Initialize();
-					break;
-				case 4:
-					item_base[i] = new Enemy3(type);
-					item_base[i]->Initialize();
-					break;
-				default:
-					break;
+					int type;
+					int percent = GetRand(99) + 1;
+					if (Matatabi_Flg != TRUE)
+					{
+						if (percent <= 30)
+						{
+							type = 0;
+						}
+						else if (percent > 30 && percent <= 60)
+						{
+							type = 1;
+						}
+						else if (percent > 60 && percent <= 75)
+						{
+							type = 2;
+						}
+						else if (percent > 75 && percent <= 90)
+						{
+							type = 3;
+						}
+						else if (percent > 90 && percent <= 95)
+						{
+							type = 4;
+						}
+						else if (percent > 95 && percent <= 100)
+						{
+							type = 5;
+						}
+					}
+					else
+					{
+						if (percent <= 70)
+						{
+							type = 0;
+						}
+						else if (percent > 70 && percent <= 100)
+						{
+							type = 2;
+						}
+					}
+					int set_lane = GetRand(4);
+					if (seted_lane[set_lane] == FALSE)
+					{
+						switch (type)
+						{
+						case 0:
+							item_base[i] = new Item(type);
+							item_base[i]->Initialize(set_lane);
+							break;
+						case 1:
+							item_base[i] = new Enemy1(type);
+							item_base[i]->Initialize(set_lane);
+							break;
+						case 2:
+							item_base[i] = new Item2(type);
+							item_base[i]->Initialize(set_lane);
+							break;
+						case 3:
+							item_base[i] = new Enemy2(type);
+							item_base[i]->Initialize(set_lane);
+							break;
+						case 4:
+							item_base[i] = new Item3(type);
+							item_base[i]->Initialize(set_lane);
+							break;
+						case 5:
+							item_base[i] = new Enemy3(type);
+							item_base[i]->Initialize(set_lane);
+							break;
+						default:
+							break;
+						}
+						seted_lane[set_lane] = TRUE;
+					}
+				}
+			}
+			item_spawn_max = GetRand(60) + 120;
+		}
+		for (int i = 0; i < 8; i++)
+		{
+			if (item_base[i] != nullptr) {
+				item_base[i]->Update(player->GetSpeed());
+
+				//画面外にいったら、敵を削除してスコア加算
+				if (item_base[i]->GetLocation().x <= 0.0f)
+				{
+					item_base[i]->Finalize();
+					delete item_base[i];
+					item_base[i] = nullptr;
+				}
+
+				//当たり判定の確認
+				if (IsHitItem(player, item_base[i]))
+				{
+					//ダメージ処理
+					if (item_base[i]->GetType() == 0)
+					{
+						player->DecreaseHp(50.0f);
+						PlaySoundMem(kira, DX_PLAYTYPE_BACK);
+					}
+					if (item_base[i]->GetType() == 1)
+					{
+						player->DecreaseHp(-50.0f);
+						PlaySoundMem(bisi, DX_PLAYTYPE_BACK);
+					}
+					if (item_base[i]->GetType() == 2)
+					{
+						player->DecreaseHp(100.0f);
+						PlaySoundMem(kira, DX_PLAYTYPE_BACK);
+					}
+					if (item_base[i]->GetType() == 3)
+					{
+						player->DecreaseHp(-100.0f);
+						PlaySoundMem(bisi, DX_PLAYTYPE_BACK);
+					}
+					if (item_base[i]->GetType() == 4)
+					{
+						Matatabi_Flg = TRUE;
+						Matatabi_cnt = 0;
+						Matatabi_Time = 300;
+						PlaySoundMem(kira, DX_PLAYTYPE_BACK);
+					}
+					if (item_base[i]->GetType() == 5)
+					{
+						YagiFlg = TRUE;
+						YagiWaitTime = 3;
+					}
+					item_base[i]->Finalize();
+					delete item_base[i];
+					item_base[i] = nullptr;
 				}
 			}
 		}
 	}
-	for (int i = 0; i < 7; i++)
+	else 
 	{
-		if (item_base[i] != nullptr) {
-			item_base[i]->Update(player->GetSpeed());
-
-			//画面外にいったら、敵を削除してスコア加算
-			if (item_base[i]->GetLocation().x <= 0.0f)
-			{
-				item_base[i]->Finalize();
-				delete item_base[i];
-				item_base[i] = nullptr;
-			}
-
-			//当たり判定の確認
-			if (IsHitItem(player, item_base[i]))
-			{
-				//ダメージ処理
-				if (item_base[i]->GetType() == 0)
-				{
-					player->DecreaseHp(50.0f);
-				}
-				if (item_base[i]->GetType() == 1)
-				{
-					player->DecreaseHp(-50.0f);
-				}
-				if (item_base[i]->GetType() == 2)
-				{
-					player->DecreaseHp(200.0f);
-				}
-				if (item_base[i]->GetType() == 3)
-				{
-					player->DecreaseHp(-100.0f);
-				}
-				if (item_base[i]->GetType() == 4)
-				{
-					player->DecreaseHp(500.0f);
-				}
-				item_base[i]->Finalize();
-				delete item_base[i];
-				item_base[i] = nullptr;
-			}
-		}
-	}
-
-	/*if (mileage / 20 % 100 == 0)
-	{
-			if (item == nullptr)
-			{
-				item = new Item(0);
-				item->Initialize();
-				
-			}
-	}
-
-	if (mileage / 20 % 100 == 0)
-	{
-
-		if (item2 == nullptr)
+		// ヤギに当たった際
+		++YagiFps;
+		player->DecreaseHp(-1.0f);
+		if (YagiFps >= 60 * YagiWaitTime)
 		{
-			
-			item2 = new Item2(0);
-			item2->Initialize();
+			YagiFlg = FALSE;
+			YagiFps = 0;
 
 		}
 	}
-
-	if (mileage / 20 % 100 == 0)
+	if (InputControl::GetButtonDown(XINPUT_BUTTON_Y))
 	{
-
-		if (enemy1 == nullptr)
-		{
-
-			enemy1 = new Enemy1(0);
-			enemy1->Initialize();
-
-		}
+		//return eSceneType::E_RANKING_INPUT;
 	}
-
-	if (mileage / 20 % 100 == 0)
-	{
-
-		if (enemy2 == nullptr)
-		{
-
-			enemy2 = new Enemy2(0);
-			enemy2->Initialize();
-
-		}
-	}
-
-	if (mileage / 20 % 100 == 0)
-	{
-
-		if (enemy3 == nullptr)
-		{
-
-			enemy3 = new Enemy3(0);
-			enemy3->Initialize();
-
-		}
-	}*/
-	//敵の更新と当たり判定チェック
-	for (int i = 0; i < 5; i++)
-	{
-		if (enemy[i] != nullptr)
-		{
-			enemy[i]->Update(player->GetSpeed());
-
-			//画面外にいったら、敵を削除してスコア加算
-			if (enemy[i]->GetLocation().y >= 640.0f)
-			{
-				enemy_count[enemy[i]->GetType()]++;
-				enemy[i]->Finalize();
-				delete enemy[i];
-				enemy[i] = nullptr;
-			}
-
-			//当たり判定の確認
-			if (IsHitCheck(player, enemy[i]))
-			{
-				player->SetActive(false);
-
-				//ダメージ処理
-				player->DecreaseHp(-50.0f);
-				enemy[i]->Finalize();
-				delete enemy[i];
-				enemy[i] = nullptr;
-			}
-		}
-	}
-
-	//アイテムの更新と判定チェック
-	//if (item != nullptr)
-	//{
-	//	item->Update(player->GetSpeed());
-	//	if (item->GetLocation().x <= -50.0f)
-	//	{
-	//		item->Finalize();
-	//		delete item;
-	//		item = nullptr;
-	//	}
-	//	//当たり判定の確認
-	//	if (IsHitCheck2(player, item))
-	//	{
-	//		player->SetActive(true);
-
-	//		//ダメージ処理
-	//		player->DecreaseHp(+50.0f);
-	//		item->Finalize();
-	//		delete item;
-	//		item = nullptr;
-	//	}
-	//}
-
-	//if (item2 != nullptr)
-	//{
-	//	item2->Update(player->GetSpeed());
-	//	if (item2->GetLocation().x <= -50.0f)
-	//	{
-	//		item2->Finalize();
-	//		delete item2;
-	//		item2 = nullptr;
-	//	}
-	//	//当たり判定の確認
-	//	if (IsHitCheck3(player, item2))
-	//	{
-	//		player->SetActive(true);
-
-	//		//ダメージ処理
-	//		player->DecreaseHp(+200.0f);
-	//		item2->Finalize();
-	//		delete item2;
-	//		item2 = nullptr;
-	//	}
-	//}
-
-	////生ごみの更新と当たり判定チェック
-	//if (enemy1 != nullptr)
-	//{
-	//	enemy1->Update(player->GetSpeed());
-	//	if (enemy1->GetLocation().x <= -50.0f)
-	//	{
-	//		enemy1->Finalize();
-	//		delete enemy1;
-	//		enemy1 = nullptr;
-	//	}
-	//	//当たり判定の確認
-	//	if (IsHitCheck4(player, enemy1))
-	//	{
-	//		player->SetActive(true);
-
-	//		//ダメージ処理
-	//		player->DecreaseHp(-100.0f);
-	//		enemy1->Finalize();
-	//		delete enemy1;
-	//		enemy1 = nullptr;
-	//	}
-	//}
-
-	//if (enemy2 != nullptr)
-	//{
-	//	enemy2->Update(player->GetSpeed());
-	//	if (enemy2->GetLocation().x <= -50.0f)
-	//	{
-	//		enemy2->Finalize();
-	//		delete enemy2;
-	//		enemy2 = nullptr;
-	//	}
-	//	//当たり判定の確認
-	//	if (IsHitCheck5(player, enemy2))
-	//	{
-	//		player->SetActive(true);
-
-	//		//ダメージ処理
-	//		player->DecreaseHp(-100.0f);
-	//		enemy2->Finalize();
-	//		delete enemy2;
-	//		enemy2 = nullptr;
-	//	}
-	//}
-
-	//if (enemy3 != nullptr)
-	//{
-	//	enemy3->Update(player->GetSpeed());
-	//	if (enemy3->GetLocation().x <= -50.0f)
-	//	{
-	//		enemy3->Finalize();
-	//		delete enemy3;
-	//		enemy3= nullptr;
-	//	}
-	//	//当たり判定の確認
-	//	if (IsHitCheck6(player, enemy3))
-	//	{
-	//		player->SetActive(true);
-
-	//		//ダメージ処理
-	//		player->DecreaseHp(-100.0f);
-	//		enemy3->Finalize();
-	//		delete enemy3;
-	//		enemy3 = nullptr;
-	//	}
-	//}
 	//プレイヤーの燃料か体力が0未満なら、リザルトに遷移する
 	if (player->GetHp() < 0.0f)
 	{
@@ -437,31 +269,7 @@ void GameMainScene::Draw()const
 			item_base[i]->Draw();
 		}
 	}
-
-		/*if (item != nullptr)
-		{
-			item->Draw();
-		}
-	
-		if (item2 != nullptr)
-		{
-			item2->Draw();
-		}
-
-		if (enemy1 != nullptr)
-		{
-			enemy1->Draw();
-		}
-
-		if (enemy2 != nullptr)
-		{
-			enemy2->Draw();
-		}
-
-		if (enemy3 != nullptr)
-		{
-			enemy3->Draw();
-		}*/
+	//敵とアイテムの描画
 
 	//プレイヤーの描画
 	player->Draw();
@@ -471,19 +279,11 @@ void GameMainScene::Draw()const
 	SetFontSize(16);
 	DrawFormatString(510, 20, GetColor(0, 0, 0 ), "ハイスコア");
 	DrawFormatString(560, 40, GetColor(255, 255, 255), "%08d", high_score);
-	DrawFormatString(510, 80, GetColor(0, 0, 0), "避けた数");
 
-	for (int i = 0; i < 3; i++)
-	{
-		DrawRotaGraph(523 + (i * 50), 120, 0.3, 0, enemy_image[i], TRUE, FALSE);
-		DrawFormatString(510 + (i * 50), 140, GetColor(255, 255, 255), "%03d", enemy_count[i]);
-
-	}
-
-	DrawFormatString(510, 200, GetColor(0, 0, 0), "走行距離");
-	DrawFormatString(555, 220, GetColor(255, 255, 255), "%8d", mileage / 10);
-	DrawFormatString(510, 240, GetColor(0, 0, 0), "スピード");
-	DrawFormatString(555, 260, GetColor(255, 255, 255), "%08.1f", player->GetSpeed());
+	DrawFormatString(510, 800, GetColor(0, 0, 0), "走った距離");
+	DrawFormatString(555, 100, GetColor(255, 255, 255), "%8d", mileage / 10);
+	DrawFormatString(510, 120, GetColor(0, 0, 0), "スピード");
+	DrawFormatString(555, 140, GetColor(255, 255, 255), "%08.1f", player->GetSpeed());
 
 	//バリア枚数の描画
 	for (int i = 0; i < player->GetBarriarCount(); i++)
@@ -539,19 +339,17 @@ void GameMainScene::Finalize()
 	player->Finalize();
 	delete player;
 
-	for (int i = 0; i < 5; i++)
+	for (int i = 0; i < 8; i++)
 	{
-		if (enemy[i] != nullptr)
+		if (item_base[i] != nullptr)
 		{
-			enemy[i]->Finalize();
-			delete enemy[i];
-			enemy[i] = nullptr;
+			item_base[i]->Finalize();
+			delete item_base[i];
+			item_base[i] = nullptr;
 		}
 	}
 
-	delete[] enemy;
-	delete item;
-	delete item2;
+	DeleteSoundMem (BGM);
 }
 
 //現在のシーン情報を取得
@@ -571,155 +369,9 @@ void GameMainScene::ReadHighScore()
 	data.Finlize();
 }
 
-//当たり判定処理（プレイヤーと敵）
-bool GameMainScene::IsHitCheck(Player* p, Enemy* e)
-{
-	//プレイヤーがバリアをはっていたら、当たり判定を無視する
-	if (p->IsBarrier())
-	{
-		return false;
-	}
-
-	//敵情報がなければ、当たり判定を無視する
-	if (e == nullptr)
-	{
-		return false;
-	}
-
-	//位置情報の差分を取得
-	Vector2D diff_location = p->GetLocation() - e->GetLocation();
-
-	//当たり判定サイズの大きさを取得
-	Vector2D box_ex = p->GetBoxSize() + e->GetBoxSize();
-
-	//コリジョンデータより位置情報の差分が小さいなら、ヒット判定とする
-	return ((fabsf(diff_location.x) < box_ex.x) && (fabsf(diff_location.y) < box_ex.y));
-}
-
-bool GameMainScene::IsHitCheck2(Player* p, Item* i)
-{
-	//プレイヤーがバリアをはっていたら、当たり判定を無視する
-	/*if (p->IsBarrier())
-	{
-		return false;
-	}*/
-
-	//敵情報がなければ、当たり判定を無視する
-	if (i == nullptr)
-	{
-		return false;
-	}
-
-	//位置情報の差分を取得
-	Vector2D diff_location = p->GetLocation() - i->GetLocation();
-
-	//当たり判定サイズの大きさを取得
-	Vector2D box_ex = p->GetBoxSize() + i->GetBoxSize();
-
-	//コリジョンデータより位置情報の差分が小さいなら、ヒット判定とする
-	return ((fabsf(diff_location.x) < box_ex.x) && (fabsf(diff_location.y) < box_ex.y));
-}
-
-
-
-bool GameMainScene::IsHitCheck3(Player* p, Item2*i2)
-{
-	//プレイヤーがバリアをはっていたら、当たり判定を無視する
-	if (p->IsBarrier())
-	{
-		return false;
-	}
-
-	//敵情報がなければ、当たり判定を無視する
-	if (i2 == nullptr)
-	{
-		return false;
-	}
-
-	//位置情報の差分を取得
-	Vector2D diff_location = p->GetLocation() - i2->GetLocation();
-
-	//当たり判定サイズの大きさを取得
-	Vector2D box_ex = p->GetBoxSize() + i2->GetBoxSize();
-
-	//コリジョンデータより位置情報の差分が小さいなら、ヒット判定とする
-	return ((fabsf(diff_location.x) < box_ex.x) && (fabsf(diff_location.y) < box_ex.y));
-}
-bool GameMainScene::IsHitCheck4(Player* p, Enemy1*e1)
-{
-	//プレイヤーがバリアをはっていたら、当たり判定を無視する
-	if (p->IsBarrier())
-	{
-		return false;
-	}
-
-	//敵情報がなければ、当たり判定を無視する
-	if (e1 == nullptr)
-	{
-		return false;
-	}
-
-	//位置情報の差分を取得
-	Vector2D diff_location = p->GetLocation() - e1->GetLocation();
-
-	//当たり判定サイズの大きさを取得
-	Vector2D box_ex = p->GetBoxSize() + e1->GetBoxSize();
-
-	//コリジョンデータより位置情報の差分が小さいなら、ヒット判定とする
-	return ((fabsf(diff_location.x) < box_ex.x) && (fabsf(diff_location.y) < box_ex.y));
-}
-
-bool GameMainScene::IsHitCheck5(Player* p, Enemy2* e2)
-{
-	//プレイヤーがバリアをはっていたら、当たり判定を無視する
-	if (p->IsBarrier())
-	{
-		return false;
-	}
-
-	//敵情報がなければ、当たり判定を無視する
-	if (e2 == nullptr)
-	{
-		return false;
-	}
-
-	//位置情報の差分を取得
-	Vector2D diff_location = p->GetLocation() - e2->GetLocation();
-
-	//当たり判定サイズの大きさを取得
-	Vector2D box_ex = p->GetBoxSize() + e2->GetBoxSize();
-
-	//コリジョンデータより位置情報の差分が小さいなら、ヒット判定とする
-	return ((fabsf(diff_location.x) < box_ex.x) && (fabsf(diff_location.y) < box_ex.y));
-}
-
-bool GameMainScene::IsHitCheck6(Player* p, Enemy3* e3)
-{
-	//プレイヤーがバリアをはっていたら、当たり判定を無視する
-	if (p->IsBarrier())
-	{
-		return false;
-	}
-
-	//敵情報がなければ、当たり判定を無視する
-	if (e3 == nullptr)
-	{
-		return false;
-	}
-
-	//位置情報の差分を取得
-	Vector2D diff_location = p->GetLocation() - e3->GetLocation();
-
-	//当たり判定サイズの大きさを取得
-	Vector2D box_ex = p->GetBoxSize() + e3->GetBoxSize();
-
-	//コリジョンデータより位置情報の差分が小さいなら、ヒット判定とする
-	return ((fabsf(diff_location.x) < box_ex.x) && (fabsf(diff_location.y) < box_ex.y));
-}
-
 bool GameMainScene::IsHitItem(Player* p, Item_Base* i)
 {
-//プレイヤーがバリアをはっていたら、当たり判定を無視する
+ //プレイヤーがバリアをはっていたら、当たり判定を無視する
 if (p->IsBarrier())
 {
 	return false;

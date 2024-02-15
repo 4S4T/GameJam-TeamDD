@@ -16,6 +16,9 @@ private:
 	//“G‰æ‘œ
 	int enemy_image[3];
 
+	int SE;
+	int SE_fanf;
+
 public:
 	ResultScene();
 	virtual ~ResultScene();

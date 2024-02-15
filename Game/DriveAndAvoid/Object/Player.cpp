@@ -23,7 +23,7 @@ void Player::Initialize()
 	box_size = Vector2D(30.0f, 30.0f);
 	lane = 3;
 	speed = 1.0f;
-	hp = 1000;
+	hp = 1000.0f;
 	barrier_count = 3;
 
 	//‰æ‘œ‚Ì“Ç‚İ‚İ
@@ -50,7 +50,7 @@ void Player::Update()
 	}
 
 	//H—¿ƒQ[ƒW‚ÌŒ¸­
-	hp--;
+	hp -= 1 + ((speed - 1) * 0.2);
 
 	//ˆÚ“®ˆ—
 	Movement();
@@ -181,3 +181,4 @@ void Player::Acceleration()
 {
 	speed++;
 }
+

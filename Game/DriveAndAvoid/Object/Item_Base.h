@@ -1,6 +1,7 @@
 #pragma once
 
 #include"../Utility/Vector2D.h"
+#include"Item_Base.h"
 
 class Item_Base
 {
@@ -21,7 +22,7 @@ public:
 	~Item_Base();
 
 	//‰Šú‰»ˆ—
-	virtual void Initialize();
+	virtual void Initialize(int set_lane);
 	//XVˆ—
 	void Update(float speed);
 	//•`‰æˆ—

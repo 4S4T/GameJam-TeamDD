@@ -57,6 +57,8 @@ public:
 	bool IsBarrier()const;
 	//‰Á‘¬ˆ—
 	void Acceleration();
+	//ƒ„ƒM‚ÌŒ¸­ˆ—
+	void YagiDecreHp(float value);
 
 private:
 

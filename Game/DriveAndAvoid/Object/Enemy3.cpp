@@ -12,13 +12,13 @@ Enemy3::~Enemy3()
 }
 
 //初期化処理
-void Enemy3::Initialize()
+void Enemy3::Initialize(int set_lane)
 {
 
 	image = LoadGraph("Resource/images/unscreen-001.png", image);
 
 	//出現させるX座標パターン取得
-	float random_y = (float)(GetRand(4) * 60 + 170);
+	float random_y = (float)(set_lane * 60 + 170);
 
 	//生成位置の設定
 	location = Vector2D(550.0f, random_y);
@@ -27,7 +27,7 @@ void Enemy3::Initialize()
 	box_size = Vector2D(30.0f, 30.0f);
 
 	//速さの設定
-	speed = 1.0f; //(float)(this->type * 2);
+	speed = 1.8f; //(float)(this->type * 2);
 }
 
 void Enemy3::Draw() const

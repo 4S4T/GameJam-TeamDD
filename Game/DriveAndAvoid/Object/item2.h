@@ -10,7 +10,7 @@ public:
 	~Item2();
 
 	//‰Šú‰»ˆ—
-	void Initialize();
+	void Initialize(int set_lane) override;
 	//•`‰æˆ—
 	void Draw() const override;
 	//I—¹ˆ—

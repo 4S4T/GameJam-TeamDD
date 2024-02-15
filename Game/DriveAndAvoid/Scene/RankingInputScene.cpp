@@ -18,8 +18,11 @@ RankingInputScene::~RankingInputScene()
 void RankingInputScene::Initialize()
 {
 	//画像の読み込み
-	background_image = LoadGraph("Resource/images/Ranking.bmp");
+	background_image = LoadGraph("Resource/images/Ranking_Back.png");
 
+	//音声の読み込み
+	SE_kettei = LoadSoundMem("Resource/sounds/pinn.mp3");
+	SE_idou = LoadSoundMem("Resource/sounds/pi.mp3");
 	//エラーチェック
 	if (background_image == -1)
 	{
@@ -75,7 +78,7 @@ void RankingInputScene::Draw() const
 	DrawGraph(0, 0, background_image, TRUE);
 
 	//名前入力指示文字列の描画
-	DrawString(150, 100, "ランキングに登録します", 0xFFFFFF);
+	DrawString(150, 170, "ランキングに登録します", 0xFFFFFF);
 	DrawFormatString(100, 220, GetColor(255, 255, 255), ">%s", name);
 
 	//選択用文字を描画
@@ -136,6 +139,7 @@ bool RankingInputScene::InputName()
 	//カーソル操作処理
 	if (InputControl::GetButtonDown(XINPUT_BUTTON_DPAD_LEFT))
 	{
+		PlaySoundMem(SE_idou, DX_PLAYTYPE_BACK);
 		if (cursor_x > 0)
 		{
 			cursor_x--;
@@ -149,6 +153,7 @@ bool RankingInputScene::InputName()
 	
 	if (InputControl::GetButtonDown(XINPUT_BUTTON_DPAD_RIGHT))
 	{
+		PlaySoundMem(SE_idou, DX_PLAYTYPE_BACK);
 		if (cursor_x < 12)
 		{
 			cursor_x++;
@@ -161,6 +166,7 @@ bool RankingInputScene::InputName()
 
 	if (InputControl::GetButtonDown(XINPUT_BUTTON_DPAD_UP))
 	{
+		PlaySoundMem(SE_idou, DX_PLAYTYPE_BACK);
 		if (cursor_y > 0)
 		{
 			cursor_y--;
@@ -168,6 +174,7 @@ bool RankingInputScene::InputName()
 	}
 	if (InputControl::GetButtonDown(XINPUT_BUTTON_DPAD_DOWN))
 	{
+		PlaySoundMem(SE_idou, DX_PLAYTYPE_BACK);
 		if (cursor_y < 4)
 		{
 			cursor_y++;
@@ -181,6 +188,7 @@ bool RankingInputScene::InputName()
 	//カーソル位置の文字を決定する
 	if (InputControl::GetButtonDown(XINPUT_BUTTON_A))
 	{
+		PlaySoundMem(SE_kettei, DX_PLAYTYPE_BACK);
 		if (cursor_y < 2)
 		{
 			name[name_num++] = 'a' + cursor_x + (cursor_y * 13);

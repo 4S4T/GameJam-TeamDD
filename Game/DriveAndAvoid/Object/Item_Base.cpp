@@ -12,13 +12,13 @@ Item_Base::~Item_Base()
 }
 
 //初期化処理
-void Item_Base::Initialize()
+void Item_Base::Initialize(int set_lane)
 {
 
 	image = LoadGraph("Resource/images/car.png", image);
 
 	//出現させるX座標パターン取得
-	float random_y = (float)(GetRand(4) * 60 + 170);
+	float random_y = (float)(set_lane * 60 + 170);
 
 	//生成位置の設定
 	location = Vector2D(550.0f, random_y);
