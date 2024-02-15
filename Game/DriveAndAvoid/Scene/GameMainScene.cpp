@@ -57,8 +57,10 @@ void GameMainScene::Initialize()
 	//item = new Item * [10];
 	item = new Item(0);
 	item2 = new Item2(0);
+	item3 = new Item3(0);
 	enemy1 = new Enemy1(0);
 	enemy2 = new Enemy2(0);
+	/*enemy3 = new Enemy3(0);*/
 
 	//オブジェクトの初期化
 	player->Initialize();
@@ -85,6 +87,11 @@ void GameMainScene::Initialize()
 	{
 		enemy2 = nullptr;
 	}
+	for (int i = 0; i < 5; i++)
+	{
+		item3 = nullptr;
+	}
+}
 	YagiFlg = FALSE;
 }
 
@@ -146,30 +153,41 @@ eSceneType GameMainScene::Update()
 		*/
 	}
 
-		if (mileage / 20 % (GetRand(99)+1) == 0)
-		{
-				if (item == nullptr)
-				{
-					item = new Item(0);
-					item->Initialize();
-				
-				}
-		}
-
-		if (mileage / 20 % 100 == 0)
-		{
-
-			if (item2 == nullptr)
+	if (mileage / 20 % (GetRand(90) + 1) == 0)
+	{
+			if (item == nullptr)
 			{
+				item = new Item(0);
+				item->Initialize();
+				
+				
+			}
+	}
+
+	if (mileage / 20 % (GetRand(99) + 1) == 0)
+	{
+		if (item2 == nullptr)
+		{
+			item2 = new Item2(0);
+			item2->Initialize();
+
+
+		}
+	}
+	/*if ((mileage / 20 % GetRand(100)) == 0)
+	{
+
+		if (item2 == nullptr)
+		{
 			
 				item2 = new Item2(0);
 				item2->Initialize();
 
-			}
 		}
+	}*/
 
-		if (mileage / 20 % 100 == 0)
-		{
+	if (mileage / 20 % (GetRand(98) + 1) == 0)
+	{
 
 			if (enemy1 == nullptr)
 			{
@@ -180,8 +198,8 @@ eSceneType GameMainScene::Update()
 			}
 		}
 
-		if (mileage / 20 % 100 == 0)
-		{
+	if (mileage / 20 % (GetRand(100) + 1) == 0)
+	{
 
 			if (enemy2 == nullptr)
 			{
@@ -192,8 +210,8 @@ eSceneType GameMainScene::Update()
 			}
 		}
 
-		if (mileage / 20 % 100 == 0)
-		{
+	if (mileage / 20 % (GetRand(96) + 1) == 0)
+	{
 
 			if (enemy3 == nullptr)
 			{
@@ -201,39 +219,20 @@ eSceneType GameMainScene::Update()
 				enemy3 = new Enemy3(0);
 				enemy3->Initialize();
 
-			}
 		}
-		//敵の更新と当たり判定チェック
-		for (int i = 0; i < 5; i++)
+	}
+
+	if (mileage / 20 % (GetRand(96) + 1) == 0)
+	{
+
+		if (item3 == nullptr)
 		{
-			if (enemy[i] != nullptr)
-			{
-				enemy[i]->Update(player->GetSpeed());
 
-				//画面外にいったら、敵を削除してスコア加算
-				if (enemy[i]->GetLocation().y >= 640.0f)
-				{
-					enemy_count[enemy[i]->GetType()]++;
-					enemy[i]->Finalize();
-					delete enemy[i];
-					enemy[i] = nullptr;
-				}
+			item3 = new Item3(0);
+			item3->Initialize();
 
-				//当たり判定の確認
-				if (IsHitCheck(player, enemy[i]))
-				{
-					player->SetActive(false);
-
-					//ダメージ処理
-					//player->DecreaseHp(-50.0f);
-					enemy[i]->Finalize();
-					delete enemy[i];
-					enemy[i] = nullptr;
-					//PlaySoundMem(bisi, DX_PLAYTYPE_BACK);
-				}
-			}
 		}
-
+	}
 	//アイテムの更新と判定チェック
 	if (item != nullptr)
 	{
@@ -383,14 +382,7 @@ void GameMainScene::Draw()const
 	DrawGraph(1600 - (mileage % 1600) - 1600, 0, back_ground, TRUE);
 	DrawGraph(1600 - (mileage % 1600), 0, back_ground, TRUE);
 
-	//敵の描画
-	for (int i = 0; i < 5; i++)
-	{
-		if (enemy[i] != nullptr)
-		{
-			enemy[i]->Draw();
-		}
-	}
+	//敵とアイテムの描画
 
 		if (item != nullptr)
 		{
@@ -416,6 +408,12 @@ void GameMainScene::Draw()const
 		{
 			enemy3->Draw();
 		}
+
+		//マタタビ
+		/*if (item3 != nullptr)
+		{
+			item3->Draw();
+		}*/
 
 	//プレイヤーの描画
 	player->Draw();
@@ -503,9 +501,13 @@ void GameMainScene::Finalize()
 		}
 	}
 
-	delete[] enemy;
+	delete enemy2;
 	delete item;
 	delete item2;
+	delete item3;
+	delete enemy1;
+	delete enemy3;
+
 }
 
 //現在のシーン情報を取得
@@ -666,6 +668,29 @@ bool GameMainScene::IsHitCheck6(Player* p, Enemy3* e3)
 
 	//当たり判定サイズの大きさを取得
 	Vector2D box_ex = p->GetBoxSize() + e3->GetBoxSize();
+
+	//コリジョンデータより位置情報の差分が小さいなら、ヒット判定とする
+	return ((fabsf(diff_location.x) < box_ex.x) && (fabsf(diff_location.y) < box_ex.y));
+}
+bool GameMainScene::IsHitCheck7(Player* p, Item3* i3)
+{
+	//プレイヤーがバリアをはっていたら、当たり判定を無視する
+	if (p->IsBarrier())
+	{
+		return false;
+	}
+
+	//敵情報がなければ、当たり判定を無視する
+	if (i3 == nullptr)
+	{
+		return false;
+	}
+
+	//位置情報の差分を取得
+	Vector2D diff_location = p->GetLocation() - i3->GetLocation();
+
+	//当たり判定サイズの大きさを取得
+	Vector2D box_ex = p->GetBoxSize() + i3->GetBoxSize();
 
 	//コリジョンデータより位置情報の差分が小さいなら、ヒット判定とする
 	return ((fabsf(diff_location.x) < box_ex.x) && (fabsf(diff_location.y) < box_ex.y));

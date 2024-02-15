@@ -4,10 +4,11 @@
 #include"../Object/Player.h"
 #include"../Object/Enemy.h"
 #include "../Object/Item.h"
-#include"../Object/Item2.h"
+#include"..//Object/Item2.h"
 #include"../Object/Enemy1.h"
 #include"../Object/Enemy2.h"
 #include"../Object/Enemy3.h"
+#include"..//Object/Item3.h"
 
 class GameMainScene :public SceneBase
 {
@@ -35,6 +36,7 @@ private:
 	//ƒAƒCƒeƒ€
 	Item* item;
 	Item2* item2;
+	Item3* item3;
 	Enemy1* enemy1;
 	Enemy2* enemy2;
 	Enemy3* enemy3;
@@ -70,4 +72,5 @@ private:
 	bool IsHitCheck4(Player* p, Enemy1* e1);
 	bool IsHitCheck5(Player* p, Enemy2* e2);
 	bool IsHitCheck6(Player* p, Enemy3* e3);
+	bool IsHitCheck7(Player* p, Item3* i3);
 };
