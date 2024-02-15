@@ -1,5 +1,6 @@
 #include"GameMainScene.h"
 #include"../Object/RankingData.h"
+#include "../Utility/InputControl.h"
 #include"DxLib.h"
 #include<math.h>
 
@@ -29,6 +30,10 @@ void GameMainScene::Initialize()
 	back_ground = LoadGraph("Resource/images/BackScroll_Image.png");
 	barrier_image = LoadGraph("Resource/images/barrier.png");
 	
+	//音声の読込
+	kira = LoadSoundMem("Resource/sounds/kira.mp3");
+	ChangeVolumeSoundMem(250, kira);
+	bisi = LoadSoundMem("Resource/sounds/bisi.mp3");
 
 	//エラーチェック
 	if (back_ground == -1)
@@ -80,252 +85,285 @@ void GameMainScene::Initialize()
 	{
 		enemy2 = nullptr;
 	}
+	YagiFlg = FALSE;
 }
 
 //更新処理
 eSceneType GameMainScene::Update()
 {
-	//プレイヤーの更新
-	player->Update();
+	if (YagiFlg == FALSE)
+	{
+		
+	
+		//プレイヤーの更新
+		player->Update();
 
-	//移動距離の更新
-	mileage += (int)player->GetSpeed() + 5;
+		//移動距離の更新
+		mileage += (int)player->GetSpeed() + 5;
 
-	if (++flame >= 60) {
-		second++;
-		flame = 0;
-		if (second % 5 == 0) {
-			player->Acceleration();
-			second = 0;
+		if (++flame >= 60) {
+			second++;
+			flame = 0;
+			if (second % 5 == 0) {
+				player->Acceleration();
+				second = 0;
+			}
 		}
-	}
 
 	
 
-	//敵生成処理 //アイテム生成処理
-	if (mileage / 20 % 100 == 0)
-	{
+		//敵生成処理 //アイテム生成処理
+		++CreateFps;
+		//if (mileage / 20 % 100 == 0)
+		if (CreateFps >= 25) 
+		{
+			for (int i = 0; i < 5; i++)
+			{
+				if (enemy[i] == nullptr)
+				{
+					int type = GetRand(1) % 1;
+					enemy[i] = new Enemy(type, enemy_image[type]);
+					enemy[i]->Initialize();
+					break;
+				}
+			}
+			CreateFps = 0;
+			/*
+			for (int i = 0; i < 10; i++)
+			{
+				if (item == nullptr)
+				{
+					int type = item_image;
+					item = new Item(item_image);
+					item->Initialize();
+					break;
+				}
+			}
+			*/
+		}
+
+		if (mileage / 20 % (GetRand(99)+1) == 0)
+		{
+				if (item == nullptr)
+				{
+					item = new Item(0);
+					item->Initialize();
+				
+				}
+		}
+
+		if (mileage / 20 % 100 == 0)
+		{
+
+			if (item2 == nullptr)
+			{
+			
+				item2 = new Item2(0);
+				item2->Initialize();
+
+			}
+		}
+
+		if (mileage / 20 % 100 == 0)
+		{
+
+			if (enemy1 == nullptr)
+			{
+
+				enemy1 = new Enemy1(0);
+				enemy1->Initialize();
+
+			}
+		}
+
+		if (mileage / 20 % 100 == 0)
+		{
+
+			if (enemy2 == nullptr)
+			{
+
+				enemy2 = new Enemy2(0);
+				enemy2->Initialize();
+
+			}
+		}
+
+		if (mileage / 20 % 100 == 0)
+		{
+
+			if (enemy3 == nullptr)
+			{
+
+				enemy3 = new Enemy3(0);
+				enemy3->Initialize();
+
+			}
+		}
+		//敵の更新と当たり判定チェック
 		for (int i = 0; i < 5; i++)
 		{
-			if (enemy[i] == nullptr)
+			if (enemy[i] != nullptr)
 			{
-				int type = GetRand(1) % 1;
-				enemy[i] = new Enemy(type, enemy_image[type]);
-				enemy[i]->Initialize();
-				break;
-			}
-		}
-		/*
-		for (int i = 0; i < 10; i++)
-		{
-			if (item == nullptr)
-			{
-				int type = item_image;
-				item = new Item(item_image);
-				item->Initialize();
-				break;
-			}
-		}
-		*/
-	}
+				enemy[i]->Update(player->GetSpeed());
 
-	if (mileage / 20 % 100 == 0)
-	{
-			if (item == nullptr)
+				//画面外にいったら、敵を削除してスコア加算
+				if (enemy[i]->GetLocation().y >= 640.0f)
+				{
+					enemy_count[enemy[i]->GetType()]++;
+					enemy[i]->Finalize();
+					delete enemy[i];
+					enemy[i] = nullptr;
+				}
+
+				//当たり判定の確認
+				if (IsHitCheck(player, enemy[i]))
+				{
+					player->SetActive(false);
+
+					//ダメージ処理
+					//player->DecreaseHp(-50.0f);
+					enemy[i]->Finalize();
+					delete enemy[i];
+					enemy[i] = nullptr;
+					//PlaySoundMem(bisi, DX_PLAYTYPE_BACK);
+				}
+			}
+		}
+
+		//アイテムの更新と判定チェック
+		if (item != nullptr)
+		{
+			item->Update(player->GetSpeed());
+			if (item->GetLocation().x <= 0.0f)
 			{
-				item = new Item(0);
-				item->Initialize();
+				item->Finalize();
+				delete item;
+				item = nullptr;
+			}
+			//当たり判定の確認
+			if (IsHitCheck2(player, item))
+			{
+				player->SetActive(true);
+				// チュール
+				//ダメージ処理
+				player->DecreaseHp(+50.0f);
+				item->Finalize();
+				delete item;
+				item = nullptr;
+				PlaySoundMem(kira, DX_PLAYTYPE_BACK);
+			}
+		}
+
+		if (item2 != nullptr)
+		{
+			item2->Update(player->GetSpeed());
+			if (item2->GetLocation().x <= 0.0f)
+			{
+				item2->Finalize();
+				delete item2;
+				item2 = nullptr;
 				
 			}
-	}
-
-	if (mileage / 20 % 100 == 0)
-	{
-
-		if (item2 == nullptr)
-		{
-			
-			item2 = new Item2(0);
-			item2->Initialize();
-
-		}
-	}
-
-	if (mileage / 20 % 100 == 0)
-	{
-
-		if (enemy1 == nullptr)
-		{
-
-			enemy1 = new Enemy1(0);
-			enemy1->Initialize();
-
-		}
-	}
-
-	if (mileage / 20 % 100 == 0)
-	{
-
-		if (enemy2 == nullptr)
-		{
-
-			enemy2 = new Enemy2(0);
-			enemy2->Initialize();
-
-		}
-	}
-
-	if (mileage / 20 % 100 == 0)
-	{
-
-		if (enemy3 == nullptr)
-		{
-
-			enemy3 = new Enemy3(0);
-			enemy3->Initialize();
-
-		}
-	}
-	//敵の更新と当たり判定チェック
-	for (int i = 0; i < 5; i++)
-	{
-		if (enemy[i] != nullptr)
-		{
-			enemy[i]->Update(player->GetSpeed());
-
-			//画面外にいったら、敵を削除してスコア加算
-			if (enemy[i]->GetLocation().y >= 640.0f)
-			{
-				enemy_count[enemy[i]->GetType()]++;
-				enemy[i]->Finalize();
-				delete enemy[i];
-				enemy[i] = nullptr;
-			}
-
 			//当たり判定の確認
-			if (IsHitCheck(player, enemy[i]))
+			if (IsHitCheck3(player, item2))
 			{
-				player->SetActive(false);
+				player->SetActive(true);
+				//マグロ
+				//ダメージ処理
+				player->DecreaseHp(+200.0f);
+				item2->Finalize();
+				delete item2;
+				item2 = nullptr;
+				PlaySoundMem(kira, DX_PLAYTYPE_BACK);
+			}
+		}
+
+		//生ごみの更新と当たり判定チェック
+		if (enemy1 != nullptr)
+		{
+			enemy1->Update(player->GetSpeed());
+			if (enemy1->GetLocation().x <= 0.0f)
+			{
+				enemy1->Finalize();
+				delete enemy1;
+				enemy1 = nullptr;
+			}
+			//当たり判定の確認
+			if (IsHitCheck4(player, enemy1))
+			{
+				player->SetActive(true);
 
 				//ダメージ処理
-				player->DecreaseHp(-50.0f);
-				enemy[i]->Finalize();
-				delete enemy[i];
-				enemy[i] = nullptr;
+				player->DecreaseHp(-100.0f);
+				enemy1->Finalize();
+				delete enemy1;
+				enemy1 = nullptr;
+				PlaySoundMem(bisi, DX_PLAYTYPE_BACK);
 			}
 		}
-	}
 
-	//アイテムの更新と判定チェック
-	if (item != nullptr)
+		if (enemy2 != nullptr)
+		{
+			enemy2->Update(player->GetSpeed());
+			if (enemy2->GetLocation().x <= 0.0f)
+			{
+				enemy2->Finalize();
+				delete enemy2;
+				enemy2 = nullptr;
+			}
+			//当たり判定の確認
+			if (IsHitCheck5(player, enemy2))
+			{
+				player->SetActive(true);
+
+				//ダメージ処理
+				player->DecreaseHp(-100.0f);
+				enemy2->Finalize();
+				delete enemy2;
+				enemy2 = nullptr;
+				PlaySoundMem(bisi, DX_PLAYTYPE_BACK);
+			}
+		}
+
+		if (enemy3 != nullptr)
+		{
+			enemy3->Update(player->GetSpeed());
+			if (enemy3->GetLocation().x <= 0.0f)
+			{
+				enemy3->Finalize();
+				delete enemy3;
+				enemy3= nullptr;
+			}
+			//当たり判定の確認
+			if (IsHitCheck6(player, enemy3))
+			{
+				player->SetActive(true);
+
+				//ダメージ処理
+				player->DecreaseHp(-100.0f);
+				enemy3->Finalize();
+				delete enemy3;
+				enemy3 = nullptr;
+				YagiFlg = TRUE;
+				YagiWaitTime = 3;
+			
+			}
+		}
+	}else 
 	{
-		item->Update(player->GetSpeed());
-		if (item->GetLocation().x <= 0.0f)
+		// ヤギに当たった際
+		++YagiFps;
+		player->DecreaseHp(-1.0f);
+		if (YagiFps >= 60 * YagiWaitTime)
 		{
-			item->Finalize();
-			delete item;
-			item = nullptr;
-		}
-		//当たり判定の確認
-		if (IsHitCheck2(player, item))
-		{
-			player->SetActive(true);
+			YagiFlg = FALSE;
+			YagiFps = 0;
 
-			//ダメージ処理
-			player->DecreaseHp(+50.0f);
-			item->Finalize();
-			delete item;
-			item = nullptr;
-		}
-	}
-
-	if (item2 != nullptr)
-	{
-		item2->Update(player->GetSpeed());
-		if (item2->GetLocation().y >= 640.0f)
-		{
-			item2->Finalize();
-			delete item2;
-			item2 = nullptr;
-		}
-		//当たり判定の確認
-		if (IsHitCheck3(player, item2))
-		{
-			player->SetActive(true);
-
-			//ダメージ処理
-			player->DecreaseHp(+200.0f);
-			item2->Finalize();
-			delete item2;
-			item2 = nullptr;
-		}
-	}
-
-	//生ごみの更新と当たり判定チェック
-	if (enemy1 != nullptr)
-	{
-		enemy1->Update(player->GetSpeed());
-		if (enemy1->GetLocation().y >= 640.0f)
-		{
-			enemy1->Finalize();
-			delete enemy1;
-			enemy1 = nullptr;
-		}
-		//当たり判定の確認
-		if (IsHitCheck4(player, enemy1))
-		{
-			player->SetActive(true);
-
-			//ダメージ処理
-			player->DecreaseHp(-100.0f);
-			enemy1->Finalize();
-			delete enemy1;
-			enemy1 = nullptr;
 		}
 	}
-
-	if (enemy2 != nullptr)
+	if (InputControl::GetButtonDown(XINPUT_BUTTON_B))
 	{
-		enemy2->Update(player->GetSpeed());
-		if (enemy2->GetLocation().y >= 640.0f)
-		{
-			enemy2->Finalize();
-			delete enemy2;
-			enemy2 = nullptr;
-		}
-		//当たり判定の確認
-		if (IsHitCheck5(player, enemy2))
-		{
-			player->SetActive(true);
-
-			//ダメージ処理
-			player->DecreaseHp(-100.0f);
-			enemy2->Finalize();
-			delete enemy2;
-			enemy2 = nullptr;
-		}
-	}
-
-	if (enemy3 != nullptr)
-	{
-		enemy3->Update(player->GetSpeed());
-		if (enemy3->GetLocation().y >= 640.0f)
-		{
-			enemy3->Finalize();
-			delete enemy3;
-			enemy3= nullptr;
-		}
-		//当たり判定の確認
-		if (IsHitCheck6(player, enemy3))
-		{
-			player->SetActive(true);
-
-			//ダメージ処理
-			player->DecreaseHp(-100.0f);
-			enemy3->Finalize();
-			delete enemy3;
-			enemy3 = nullptr;
-		}
+		enemy3 = nullptr;
 	}
 	//プレイヤーの燃料か体力が0未満なら、リザルトに遷移する
 	if (player->GetHp() < 0.0f)
@@ -520,7 +558,7 @@ bool GameMainScene::IsHitCheck2(Player* p, Item* i)
 	//敵情報がなければ、当たり判定を無視する
 	if (i == nullptr)
 	{
-		return true;
+		return false;
 	}
 
 	//位置情報の差分を取得

@@ -41,6 +41,14 @@ private:
 
 	int flame;
 	int second;
+	int CreateFps;
+
+	bool YagiFlg;
+	int YagiWaitTime;
+	int YagiFps;
+
+	int kira;
+	int bisi;
 public:
 	GameMainScene();
 	virtual ~GameMainScene();
@@ -51,7 +59,6 @@ public:
 	virtual void Finalize() override;
 
 	virtual eSceneType GetNowScene() const override;
-
 private:
 
 	//ハイスコア読み込み処理

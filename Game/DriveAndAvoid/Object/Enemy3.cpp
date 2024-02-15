@@ -27,7 +27,7 @@ void Enemy3::Initialize()
 	box_size = Vector2D(25.0f, 25.0f);
 
 	//‘¬‚³‚ÌÝ’è
-	speed = 1.0f; //(float)(this->type * 2);
+	speed = 1.8f; //(float)(this->type * 2);
 }
 
 void Enemy3::Update(float speed)
