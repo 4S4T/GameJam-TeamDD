@@ -49,6 +49,8 @@ private:
 
 	int kira;
 	int bisi;
+
+	int BGM;
 public:
 	GameMainScene();
 	virtual ~GameMainScene();

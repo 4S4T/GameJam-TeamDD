@@ -34,7 +34,8 @@ void GameMainScene::Initialize()
 	kira = LoadSoundMem("Resource/sounds/kira.mp3");
 	ChangeVolumeSoundMem(250, kira);
 	bisi = LoadSoundMem("Resource/sounds/bisi.mp3");
-
+	BGM = LoadSoundMem("Resource/sounds/Relay.mp3");
+	PlaySoundMem(BGM, DX_PLAYTYPE_LOOP);
 	//エラーチェック
 	if (back_ground == -1)
 	{
@@ -91,6 +92,10 @@ void GameMainScene::Initialize()
 //更新処理
 eSceneType GameMainScene::Update()
 {
+	if (BGM == -1)
+	{
+		PlaySoundMem(BGM, DX_PLAYTYPE_LOOP);
+	}
 	if (YagiFlg == FALSE)
 	{
 		
@@ -364,9 +369,9 @@ eSceneType GameMainScene::Update()
 
 		}
 	}
-	if (InputControl::GetButtonDown(XINPUT_BUTTON_B))
+	if (InputControl::GetButtonDown(XINPUT_BUTTON_Y))
 	{
-		enemy3 = nullptr;
+		//return eSceneType::E_RANKING_INPUT;
 	}
 	//プレイヤーの燃料か体力が0未満なら、リザルトに遷移する
 	if (player->GetHp() < 0.0f)
@@ -506,6 +511,7 @@ void GameMainScene::Finalize()
 	delete[] enemy;
 	delete item;
 	delete item2;
+	DeleteSoundMem (BGM);
 }
 
 //現在のシーン情報を取得
