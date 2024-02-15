@@ -16,7 +16,7 @@ Barrier::Barrier() : life_span(1000)
 Barrier::~Barrier()
 {
 	//—]‚à‚ñ‚¾‰æ‘œ‚ğíœ
-	DeleteGraph(image[6]);
+	//DeleteGraph(image);
 }
 
 //•`‰æˆ—
