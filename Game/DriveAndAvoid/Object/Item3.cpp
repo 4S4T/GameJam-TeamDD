@@ -30,6 +30,13 @@ void Item3::Initialize(int set_lane)
 	speed = 1.0f; //(float)(this->type * 2);
 }
 
+void Item3::Update(float speed)
+{
+
+	//ˆÊ’uî•ñ‚ÉˆÚ“®—Ê‚ð‰ÁŽZ‚·‚é
+	location -= Vector2D(this->speed + speed, 0.0f);// + speed - 6);
+
+}
 void Item3::Draw() const
 {
     

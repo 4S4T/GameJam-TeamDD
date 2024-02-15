@@ -1,10 +1,24 @@
 #pragma once
+#pragma once
 
 #include"../Utility/Vector2D.h"
 #include"Item_Base.h"
 
 class Item3 : public Item_Base
 {
+
+private:
+	//タイプ
+	int type;
+	//画像
+	int image;
+	//速さ
+	float speed;
+	//位置情報
+	Vector2D location;
+	//当たり判定の大きさ
+	Vector2D box_size;
+
 public:
 	Item3(int type); //int handle);
 	~Item3();

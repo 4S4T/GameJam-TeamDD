@@ -26,6 +26,7 @@ private:
 
 	int cursorSE;
 	int ketteiSE;
+	int BGM;
 public:
 	TitleScene();
 	virtual ~TitleScene();

@@ -33,7 +33,7 @@ void GameMainScene::Initialize()
 	kira = LoadSoundMem("Resource/sounds/kira.mp3");
 	ChangeVolumeSoundMem(250, kira);
 	bisi = LoadSoundMem("Resource/sounds/bisi.mp3");
-	BGM = LoadSoundMem("Resource/sounds/Relay.mp3");
+	BGM = LoadSoundMem("Resource/sounds/mainBGM.mp3");
 	PlaySoundMem(BGM, DX_PLAYTYPE_LOOP);
 	//エラーチェック
 	if (back_ground == -1)
@@ -269,7 +269,7 @@ void GameMainScene::Draw()const
 			item_base[i]->Draw();
 		}
 	}
-	//敵とアイテムの描画
+
 
 	//プレイヤーの描画
 	player->Draw();
