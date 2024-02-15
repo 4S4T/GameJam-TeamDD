@@ -1,7 +1,7 @@
 #include "Enemy2.h"
 #include "DxLib.h"
 
-Enemy2::Enemy2(int type) : type(type), image(), speed(0.0f), location(0.0f), box_size(0.0f)
+Enemy2::Enemy2(int type) : Item_Base(type)
 {
 
 }
@@ -30,16 +30,8 @@ void Enemy2::Initialize()
 	speed = 2.0f; //(float)(this->type * 2);
 }
 
-void Enemy2::Update(float speed)
-{
-
-	//ˆÊ’uî•ñ‚ÉˆÚ“®—Ê‚ð‰ÁŽZ‚·‚é
-	location -= Vector2D(this->speed+speed,0.0f);// + speed - 6);
-
-}
 void Enemy2::Draw() const
 {
-
 	//“G‰æ‘œ‚Ì•`‰æ
 	DrawRotaGraphF(location.x, location.y, 1.0, 0.0, image, TRUE);
 
