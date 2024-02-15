@@ -17,14 +17,14 @@ void Enemy2::Initialize()
 
 	image = LoadGraph("Resource/images/snake.png", image);
 
-	//出現させるX座標パターン取得
-	float random_y = (float)(GetRand(4) * 50 + 150);
+	//出現させるY座標パターン取得
+	float random_y = (float)(GetRand(4) * 60 + (GetRand(150)+70));
 
 	//生成位置の設定
 	location = Vector2D(550.0f,random_y);
 
 	//当たり判定の設定
-	box_size = Vector2D(31.0f, 60.0f);
+	box_size = Vector2D(10.0f, 30.0f);
 
 	//速さの設定
 	speed = 1.0f; //(float)(this->type * 2);

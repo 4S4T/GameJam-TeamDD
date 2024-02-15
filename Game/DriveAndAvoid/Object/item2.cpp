@@ -15,13 +15,13 @@ Item2::~Item2()
 void Item2::Initialize()
 {
 
-	image = LoadGraph("Resource/images/food_maguro_saku2.png");
+	image = LoadGraph("Resource/images/food_maguro_saku2.png", image);
 
-	//出現させるX座標パターン取得
-	float random_y = (float)(GetRand(4) * 50 + 150);
+	//出現させるY座標パターン取得
+	float random_y = (float)(GetRand(4) * 60 + (GetRand(150)+70));
 
 	//生成位置の設定
-	location = Vector2D(550.0f,random_y);
+	location = Vector2D(550.0f, random_y);
 
 	//当たり判定の設定
 	box_size = Vector2D(31.0f, 60.0f);
@@ -34,7 +34,7 @@ void Item2::Update(float speed)
 {
 
 	//位置情報に移動量を加算する
-	location -= Vector2D( this->speed + speed,0.0f);// + speed - 6);
+	location -= Vector2D(this->speed + speed, 0.0f);// + speed - 6);
 
 }
 void Item2::Draw() const
