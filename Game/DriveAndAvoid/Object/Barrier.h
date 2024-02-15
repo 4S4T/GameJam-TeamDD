@@ -5,9 +5,9 @@
 class Barrier
 {
 private:
-
+	int count;
 	//バリア画像
-	int image;
+	int image[6];
 
 	//バリアの寿命
 	float life_span;

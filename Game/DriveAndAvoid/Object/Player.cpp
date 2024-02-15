@@ -23,11 +23,11 @@ void Player::Initialize()
 	box_size = Vector2D(box_x, box_y);
 	lane = 3;
 	speed = 1.0f;
-	hp = 1000;
+	hp = 100000;
 	barrier_count = 3;
 
 	//画像の読み込み
-	image = LoadGraph("Resource/images/car1pol.bmp");
+	image = LoadGraph("Resource/images/neko.png");
 
 	//エラーチェック
 	if (image == -1)
