@@ -3,6 +3,7 @@
 #include"SceneBase.h"
 #include"../Object/Player.h"
 #include"../Object/Enemy.h"
+#include"../Object/Item_Base.h"
 #include "../Object/Item.h"
 #include"../Object/Item2.h"
 #include"../Object/Enemy1.h"
@@ -39,6 +40,7 @@ private:
 	Enemy2* enemy2;
 	Enemy3* enemy3;
 
+	Item_Base* item_base[8];
 	int flame;
 	int second;
 public:
@@ -63,4 +65,5 @@ private:
 	bool IsHitCheck4(Player* p, Enemy1* e1);
 	bool IsHitCheck5(Player* p, Enemy2* e2);
 	bool IsHitCheck6(Player* p, Enemy3* e3);
+	bool IsHitItem(Player* p, Item_Base* i);
 };

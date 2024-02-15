@@ -1,9 +1,9 @@
 #include "Enemy1.h"
 #include "DxLib.h"
 
-Enemy1::Enemy1(int type) : type(type), image(), speed(0.0f), location(0.0f), box_size(0.0f)
+Enemy1::Enemy1(int type) : Item_Base(type)
 {
-
+	
 }
 
 Enemy1::~Enemy1()
@@ -30,13 +30,6 @@ void Enemy1::Initialize()
 	speed = 1.0f; //(float)(this->type * 2);
 }
 
-void Enemy1::Update(float speed)
-{
-
-	//ˆÊ’uî•ñ‚ÉˆÚ“®—Ê‚ð‰ÁŽZ‚·‚é
-	location -= Vector2D( this->speed+speed,0.0f);// + speed - 6);
-
-}
 void Enemy1::Draw() const
 {
 

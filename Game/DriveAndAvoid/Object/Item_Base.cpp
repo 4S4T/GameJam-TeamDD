@@ -1,18 +1,18 @@
-#include "Item.h"
+#include "Item_Base.h"
 #include "DxLib.h"
 
-Item::Item(int type) : Item_Base(type)
+Item_Base::Item_Base(int type) : type(type), image(), speed(0.0f), location(0.0f), box_size(0.0f)
 {
-
+	//image = 0; speed = 0.0f; location = (0.0f); box_size = (0.0f);
 }
 
-Item::~Item()
+Item_Base::~Item_Base()
 {
 
 }
 
 //‰Šú‰»ˆ—
-void Item::Initialize()
+void Item_Base::Initialize()
 {
 
 	image = LoadGraph("Resource/images/car.png", image);
@@ -29,7 +29,15 @@ void Item::Initialize()
 	//‘¬‚³‚Ìİ’è
 	speed = 1.0f; //(float)(this->type * 2);
 }
-void Item::Draw() const
+
+void Item_Base::Update(float speed)
+{
+
+	//ˆÊ’uî•ñ‚ÉˆÚ“®—Ê‚ğ‰ÁZ‚·‚é
+	location -= Vector2D(this->speed + speed, 0.0f);// + speed - 6);
+
+}
+void Item_Base::Draw() const
 {
 
 	//“G‰æ‘œ‚Ì•`‰æ
@@ -37,13 +45,13 @@ void Item::Draw() const
 
 }
 
-void Item::Finalize()
+void Item_Base::Finalize()
 {
 
 }
 
 //“G‚Ìƒ^ƒCƒv‚ğæ“¾
-int Item::GetType() const
+int Item_Base::GetType() const
 {
 
 	return type;
@@ -51,7 +59,7 @@ int Item::GetType() const
 }
 
 //ˆÊ’uî•ñ‚ğæ“¾
-Vector2D Item::GetLocation()const
+Vector2D Item_Base::GetLocation()const
 {
 
 	return location;
@@ -59,7 +67,7 @@ Vector2D Item::GetLocation()const
 }
 
 //“–‚½‚è”»’è‚Ì‘å‚«‚³æ“¾
-Vector2D Item::GetBoxSize() const
+Vector2D Item_Base::GetBoxSize() const
 {
 	return box_size;
 }
