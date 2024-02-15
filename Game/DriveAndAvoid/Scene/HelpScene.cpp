@@ -31,7 +31,7 @@ void HelpScene::Initialize()
 eSceneType HelpScene::Update()
 {
 	//Bボタンが押されたら、タイトルに戻る
-	if (InputControl::GetButtonDown(XINPUT_BUTTON_B))
+	if (InputControl::GetButtonDown(XINPUT_BUTTON_A))
 	{
 		return eSceneType::E_TITLE;
 	}

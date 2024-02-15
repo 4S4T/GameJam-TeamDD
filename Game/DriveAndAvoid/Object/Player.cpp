@@ -19,8 +19,8 @@ void Player::Initialize()
 {
 
 	is_active = true;
-	location = Vector2D(60.0f, 300.0f);
-	box_size = Vector2D(box_x, box_y);
+	location = Vector2D(60.0f, 350.0f);
+	box_size = Vector2D(30.0f, 30.0f);
 	lane = 3;
 	speed = 1.0f;
 	hp = 1000;
@@ -61,26 +61,6 @@ void Player::Update()
 		//is_active = false;
 	}
 
-	//バリア処理
-	if (InputControl::GetButtonDown(XINPUT_BUTTON_B) && barrier_count > 0)
-	{
-		if (barrier == nullptr)
-		{
-			barrier_count--;
-			barrier = new Barrier;
-		}
-	}
-
-	//バリアが生成されていたら、更新を行う
-	if (barrier != nullptr)
-	{
-		//バリアが経過したか？していたら、削除する
-		if (barrier->IsFinished(this->speed))
-		{
-			delete barrier;
-			barrier = nullptr;
-		}
-	}
 }
 
 //描画処理
@@ -89,11 +69,6 @@ void Player::Draw()
 	//プレイヤー画像の描画
 	DrawRotaGraphF(location.x, location.y, 1, 0, image, TRUE);
 
-	//バリアが生成されていたら、描画を行う
-	if (barrier != nullptr)
-	{
-		barrier->Draw(this->location);
-	}
 }
 
 //終了時処理
@@ -119,6 +94,9 @@ void Player::SetActive(bool flg)
 void Player::DecreaseHp(float value)
 {
 	this->hp += value;
+	if (hp > 1000) {
+		hp = 1000;
+	}
 }
 
 //位置情報取得処理
@@ -179,15 +157,15 @@ void Player::Movement()
 		if (lane > 0)
 		{
 			lane--;
-			location = Vector2D(60.0f, (50.0f * lane) + 150.0f);
+			location = Vector2D(60.0f, (60.0f * lane) + 170.0f);
 		}
 	}
 	if (InputControl::GetButtonDown(XINPUT_BUTTON_DPAD_DOWN))
 	{
-		if (lane < 5)
+		if (lane < 4)
 		{
 			lane++;
-			location = Vector2D(60.0f, (50.0f * lane) + 150.0f);
+			location = Vector2D(60.0f, (60.0f * lane) + 170.0f);
 		}
 	}
 
@@ -203,3 +181,4 @@ void Player::Acceleration()
 {
 	speed++;
 }
+

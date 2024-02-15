@@ -14,8 +14,6 @@ private:
 	Vector2D location;
 	//“–‚½‚è”»’è‚Ì‘å‚«‚³
 	Vector2D box_size;
-	float box_x = 25.0f;
-	float box_y = 25.0f;
 	//Œ»İ‚ÌƒŒ[ƒ“
 	int lane;
 	//‘¬‚³
@@ -59,6 +57,8 @@ public:
 	bool IsBarrier()const;
 	//‰Á‘¬ˆ—
 	void Acceleration();
+	//ƒ„ƒM‚ÌŒ¸­ˆ—
+	void YagiDecreHp(float value);
 
 private:
 
