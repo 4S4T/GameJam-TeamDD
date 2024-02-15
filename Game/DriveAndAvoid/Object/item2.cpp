@@ -27,7 +27,7 @@ void Item2::Initialize()
 	box_size = Vector2D(30.0f, 30.0f);
 
 	//‘¬‚³‚ÌÝ’è
-	speed = 1.0f; //(float)(this->type * 2);
+	speed = 4.0f; //(float)(this->type * 2);
 }
 
 void Item2::Update(float speed)

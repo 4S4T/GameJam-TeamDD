@@ -181,3 +181,4 @@ void Player::Acceleration()
 {
 	speed++;
 }
+
