@@ -49,12 +49,7 @@ eSceneType ResultScene::Update()
 	if (InputControl::GetButtonDown(XINPUT_BUTTON_A))
 	{
 		PlaySoundMem(SE, DX_PLAYTYPE_BACK);
-		if (ReadResultScore() >= score) {
-			return eSceneType::E_RANKING_DISP;
-		}
-		else {
-			return eSceneType::E_RANKING_INPUT;
-		}
+		return eSceneType::E_RANKING_INPUT;
 	}
 	return GetNowScene();
 }
