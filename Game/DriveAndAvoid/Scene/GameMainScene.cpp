@@ -291,12 +291,6 @@ void GameMainScene::Draw()const
 		DrawBoxAA(fx, fy + 20.0f, fx + 100.0f, fy + 40.0f, GetColor(0, 0, 0), FALSE);
 	}
 
-	//バリア枚数の描画
-	for (int i = 0; i < player->GetBarriarCount(); i++)
-	{
-		DrawRotaGraph(520 + i * 25, 390, 0.2f, 0, barrier_image, TRUE, FALSE);
-	}
-
 	//体力ゲージの描画
 	fx = 510.0f;
 	fy = 430.0f;
