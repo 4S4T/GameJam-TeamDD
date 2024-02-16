@@ -56,7 +56,7 @@ public:
 	//バリア有効か？を取得
 	bool IsBarrier()const;
 	//加速処理
-	void Acceleration();
+	void Acceleration(float add);
 	//ヤギ時の減少処理
 	void YagiDecreHp(float value);
 

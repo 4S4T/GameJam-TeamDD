@@ -1,9 +1,9 @@
 #include "Enemy1.h"
 #include "DxLib.h"
 
-Enemy1::Enemy1(int type) : type(type), image(), speed(0.0f), location(0.0f), box_size(0.0f)
+Enemy1::Enemy1(int type) : Item_Base(type)
 {
-
+	
 }
 
 Enemy1::~Enemy1()
@@ -12,13 +12,13 @@ Enemy1::~Enemy1()
 }
 
 //初期化処理
-void Enemy1::Initialize()
+void Enemy1::Initialize(int set_lane)
 {
 
 	image = LoadGraph("Resource/images/gomi_namagomi.png", image);
 
 	//出現させるX座標パターン取得
-	float random_y = (float)(GetRand(4) * 60 + 170);
+	float random_y = (float)(set_lane * 60 + 170);
 
 	//生成位置の設定
 	location = Vector2D(550.0f,random_y);
@@ -30,13 +30,6 @@ void Enemy1::Initialize()
 	speed = 1.0f; //(float)(this->type * 2);
 }
 
-void Enemy1::Update(float speed)
-{
-
-	//位置情報に移動量を加算する
-	location -= Vector2D( this->speed+speed,0.0f);// + speed - 6);
-
-}
 void Enemy1::Draw() const
 {
 
@@ -71,3 +64,4 @@ Vector2D Enemy1::GetBoxSize() const
 {
 	return box_size;
 }
+

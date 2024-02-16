@@ -1,21 +1,21 @@
-#include "Item2.h"
+#include "Item3.h"
 #include "DxLib.h"
 
-Item2::Item2(int type) : Item_Base(type)
+Item3::Item3(int type) : Item_Base(type)
 {
-	
+
 }
 
-Item2::~Item2()
+Item3::~Item3()
 {
 
 }
 
 //初期化処理
-void Item2::Initialize(int set_lane)
+void Item3::Initialize(int set_lane)
 {
 
-	image = LoadGraph("Resource/images/food_maguro_saku2.png", image);
+	image = LoadGraph("Resource/images/matatabi.png", image);
 
 	//出現させるX座標パターン取得
 	float random_y = (float)(set_lane * 60 + 170);
@@ -27,24 +27,24 @@ void Item2::Initialize(int set_lane)
 	box_size = Vector2D(30.0f, 30.0f);
 
 	//速さの設定
-	speed = 4.0f; //(float)(this->type * 2);
+	speed = 1.0f; //(float)(this->type * 2);
 }
 
-void Item2::Draw() const
+void Item3::Draw() const
 {
-
+    
 	//敵画像の描画
 	DrawRotaGraphF(location.x, location.y, 1.0, 0.0, image, TRUE);
 
 }
 
-void Item2::Finalize()
+void Item3::Finalize()
 {
 
 }
 
 //敵のタイプを取得
-int Item2::GetType() const
+int Item3::GetType() const
 {
 
 	return type;
@@ -52,7 +52,7 @@ int Item2::GetType() const
 }
 
 //位置情報を取得
-Vector2D Item2::GetLocation()const
+Vector2D Item3::GetLocation()const
 {
 
 	return location;
@@ -60,7 +60,7 @@ Vector2D Item2::GetLocation()const
 }
 
 //当たり判定の大きさ取得
-Vector2D Item2::GetBoxSize() const
+Vector2D Item3::GetBoxSize() const
 {
 	return box_size;
 }

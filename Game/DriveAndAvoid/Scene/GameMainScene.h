@@ -3,11 +3,13 @@
 #include"SceneBase.h"
 #include"../Object/Player.h"
 #include"../Object/Enemy.h"
+#include"../Object/Item_Base.h"
 #include "../Object/Item.h"
-#include"../Object/Item2.h"
+#include"..//Object/Item2.h"
 #include"../Object/Enemy1.h"
 #include"../Object/Enemy2.h"
 #include"../Object/Enemy3.h"
+#include"..//Object/Item3.h"
 
 class GameMainScene :public SceneBase
 {
@@ -29,19 +31,21 @@ private:
 	int enemy_count[3];
 	//プレイヤー
 	Player* player;
-	//敵
-	Enemy** enemy;
 
 	//アイテム
-	Item* item;
-	Item2* item2;
-	Enemy1* enemy1;
-	Enemy2* enemy2;
-	Enemy3* enemy3;
 
+
+	Item_Base* item_base[8];
 	int flame;
 	int second;
 	int CreateFps;
+
+	int item_spawn_rate;
+	int item_spawn_max;
+
+	bool Matatabi_Flg;
+	int Matatabi_cnt;
+	int Matatabi_Time;
 
 	bool YagiFlg;
 	int YagiWaitTime;
@@ -49,6 +53,9 @@ private:
 
 	int kira;
 	int bisi;
+	int fever_se;
+
+	int BGM;
 public:
 	GameMainScene();
 	virtual ~GameMainScene();
@@ -64,10 +71,5 @@ private:
 	//ハイスコア読み込み処理
 	void ReadHighScore();
 	//当たり判定
-	bool IsHitCheck(Player* p, Enemy* e);
-	bool IsHitCheck2(Player* p, Item* i);
-	bool IsHitCheck3(Player* p, Item2* i2);
-	bool IsHitCheck4(Player* p, Enemy1* e1);
-	bool IsHitCheck5(Player* p, Enemy2* e2);
-	bool IsHitCheck6(Player* p, Enemy3* e3);
+	bool IsHitItem(Player* p, Item_Base* i);
 };

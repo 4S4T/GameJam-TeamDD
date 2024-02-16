@@ -132,13 +132,15 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="AppMain.cpp" />
+    <ClCompile Include="Object\Item_Base.cpp" />
     <ClCompile Include="Object\Barrier.cpp" />
     <ClCompile Include="Object\Enemy.cpp" />
     <ClCompile Include="Object\Enemy1.cpp" />
     <ClCompile Include="Object\Enemy2.cpp" />
     <ClCompile Include="Object\Enemy3.cpp" />
     <ClCompile Include="Object\Item.cpp" />
-    <ClCompile Include="Object\item2.cpp" />
+    <ClCompile Include="Object\Item2.cpp" />
+    <ClCompile Include="Object\Item3.cpp" />
     <ClCompile Include="Object\Player.cpp" />
     <ClCompile Include="Object\RankingData.cpp" />
     <ClCompile Include="Scene\GameMainScene.cpp" />
@@ -152,13 +154,15 @@
     <ClCompile Include="Utility\SoundPlayer.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Object\Item_Base.h" />
     <ClInclude Include="Object\Barrier.h" />
     <ClInclude Include="Object\Enemy.h" />
     <ClInclude Include="Object\Enemy1.h" />
     <ClInclude Include="Object\Enemy2.h" />
     <ClInclude Include="Object\Enemy3.h" />
     <ClInclude Include="Object\Item.h" />
-    <ClInclude Include="Object\item2.h" />
+    <ClInclude Include="Object\Item2.h" />
+    <ClInclude Include="Object\Item3.h" />
     <ClInclude Include="Object\Player.h" />
     <ClInclude Include="Object\RankingData.h" />
     <ClInclude Include="Scene\GameMainScene.h" />

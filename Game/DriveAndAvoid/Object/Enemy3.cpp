@@ -1,7 +1,7 @@
 #include "Enemy3.h"
 #include "DxLib.h"
 
-Enemy3::Enemy3(int type) : type(type), image(), speed(0.0f), location(0.0f), box_size(0.0f)
+Enemy3::Enemy3(int type) : Item_Base(type)
 {
 
 }
@@ -12,13 +12,13 @@ Enemy3::~Enemy3()
 }
 
 //初期化処理
-void Enemy3::Initialize()
+void Enemy3::Initialize(int set_lane)
 {
 
 	image = LoadGraph("Resource/images/unscreen-001.png", image);
 
 	//出現させるX座標パターン取得
-	float random_y = (float)(GetRand(4) * 60 + 170);
+	float random_y = (float)(set_lane * 60 + 170);
 
 	//生成位置の設定
 	location = Vector2D(550.0f, random_y);
@@ -30,13 +30,6 @@ void Enemy3::Initialize()
 	speed = 1.8f; //(float)(this->type * 2);
 }
 
-void Enemy3::Update(float speed)
-{
-
-	//位置情報に移動量を加算する
-	location -= Vector2D(this->speed+speed,0.0f );// + speed - 6);
-
-}
 void Enemy3::Draw() const
 {
 

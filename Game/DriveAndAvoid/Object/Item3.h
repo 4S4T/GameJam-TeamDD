@@ -3,11 +3,11 @@
 #include"../Utility/Vector2D.h"
 #include"Item_Base.h"
 
-class Item :public Item_Base
+class Item3 : public Item_Base
 {
 public:
-	Item(int type); //int handle);
-	~Item();
+	Item3(int type); //int handle);
+	~Item3();
 
 	//‰Šú‰»ˆ—
 	void Initialize(int set_lane) override;
