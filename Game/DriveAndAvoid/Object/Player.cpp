@@ -177,8 +177,8 @@ void Player::Movement()
 }
 
 //‰ÁŒ¸‘¬ˆ—
-void Player::Acceleration()
+void Player::Acceleration(float add)
 {
-	speed++;
+	speed += add;
 }
 

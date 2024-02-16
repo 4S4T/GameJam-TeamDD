@@ -33,6 +33,7 @@ void GameMainScene::Initialize()
 	kira = LoadSoundMem("Resource/sounds/kira.mp3");
 	ChangeVolumeSoundMem(250, kira);
 	bisi = LoadSoundMem("Resource/sounds/bisi.mp3");
+	fever_se = LoadSoundMem("Resource/sounds/fever.mp3");
 	BGM = LoadSoundMem("Resource/sounds/mainBGM.mp3");
 	PlaySoundMem(BGM, DX_PLAYTYPE_LOOP);
 	//エラーチェック
@@ -63,6 +64,7 @@ void GameMainScene::Initialize()
 //更新処理
 eSceneType GameMainScene::Update()
 {
+
 	if (Matatabi_Flg == TRUE) {
 		if (++Matatabi_cnt >= Matatabi_Time) {
 			Matatabi_Flg = FALSE;
@@ -79,13 +81,9 @@ eSceneType GameMainScene::Update()
 		//移動距離の更新
 		mileage += (int)player->GetSpeed() + 5;
 
-		if (++flame >= 60) {
-			second++;
+		if (++flame >= 30) {
+			player->Acceleration(0.1f);
 			flame = 0;
-			if (second % 5 == 0) {
-				player->Acceleration();
-				second = 0;
-			}
 		}
 
 		if (++item_spawn_rate >= item_spawn_max)
@@ -216,7 +214,7 @@ eSceneType GameMainScene::Update()
 						Matatabi_Flg = TRUE;
 						Matatabi_cnt = 0;
 						Matatabi_Time = 300;
-						PlaySoundMem(kira, DX_PLAYTYPE_BACK);
+						PlaySoundMem(fever_se, DX_PLAYTYPE_BACK);
 					}
 					if (item_base[i]->GetType() == 5)
 					{
@@ -285,15 +283,23 @@ void GameMainScene::Draw()const
 	DrawFormatString(510, 160, GetColor(0, 0, 0), "スピード");
 	DrawFormatString(555, 180, GetColor(255, 255, 255), "%08.1f", player->GetSpeed());
 
+	float fx = 510.0f;
+	float fy = 250.0f;
+	if (Matatabi_Flg == TRUE) {
+		DrawFormatStringF(fx, fy, GetColor(0, 0, 0), "FEVER");
+		DrawBoxAA(fx, fy + 20.0f, fx + ((Matatabi_Time - Matatabi_cnt) * 100 / Matatabi_Time), fy + 40.0f, GetColor(255, 0, 0), TRUE);
+		DrawBoxAA(fx, fy + 20.0f, fx + 100.0f, fy + 40.0f, GetColor(0, 0, 0), FALSE);
+	}
+
 	//バリア枚数の描画
 	for (int i = 0; i < player->GetBarriarCount(); i++)
 	{
-		DrawRotaGraph(520 + i * 25, 340, 0.2f, 0, barrier_image, TRUE, FALSE);
+		DrawRotaGraph(520 + i * 25, 390, 0.2f, 0, barrier_image, TRUE, FALSE);
 	}
 
 	//体力ゲージの描画
-	float fx = 510.0f;
-	float fy = 430.0f;
+	fx = 510.0f;
+	fy = 430.0f;
 	DrawFormatStringF(fx, fy, GetColor(0, 0, 0), "食料ゲージ");
 	DrawBoxAA(fx, fy + 20.0f, fx + (player->GetHp() * 100 / 1000), fy + 40.0f, GetColor(255, 182, 0), TRUE);
 	DrawBoxAA(fx, fy + 20.0f, fx + 100.0f, fy + 40.0f, GetColor(0, 0, 0), FALSE);

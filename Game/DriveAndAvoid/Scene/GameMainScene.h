@@ -53,6 +53,7 @@ private:
 
 	int kira;
 	int bisi;
+	int fever_se;
 
 	int BGM;
 public:
