@@ -23,6 +23,10 @@ private:
 
 	// ƒtƒHƒ“ƒg
 	int font1;
+
+	int cursorSE;
+	int ketteiSE;
+	int BGM;
 public:
 	TitleScene();
 	virtual ~TitleScene();

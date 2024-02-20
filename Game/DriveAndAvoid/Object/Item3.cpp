@@ -1,7 +1,7 @@
 #include "Item3.h"
 #include "DxLib.h"
 
-Item3::Item3(int type) : type(type), image(), speed(0.0f), location(0.0f), box_size(0.0f)
+Item3::Item3(int type) : Item_Base(type)
 {
 
 }
@@ -12,31 +12,24 @@ Item3::~Item3()
 }
 
 //初期化処理
-void Item3::Initialize()
+void Item3::Initialize(int set_lane)
 {
 
 	image = LoadGraph("Resource/images/matatabi.png", image);
 
 	//出現させるX座標パターン取得
-	float random_y = (float)(GetRand(4) * 60 + (GetRand(150) + 70));
+	float random_y = (float)(set_lane * 60 + 170);
 
 	//生成位置の設定
 	location = Vector2D(550.0f, random_y);
 
 	//当たり判定の設定
-	box_size = Vector2D(31.0f, 60.0f);
+	box_size = Vector2D(30.0f, 30.0f);
 
 	//速さの設定
 	speed = 1.0f; //(float)(this->type * 2);
 }
 
-void Item3::Update(float speed)
-{
-
-	//位置情報に移動量を加算する
-	location -= Vector2D(this->speed + speed, 0.0f);// + speed - 6);
-
-}
 void Item3::Draw() const
 {
     

@@ -23,11 +23,11 @@ void Player::Initialize()
 	box_size = Vector2D(30.0f, 30.0f);
 	lane = 3;
 	speed = 1.0f;
-	hp = 1000;
+	hp = 1000.0f;
 	barrier_count = 3;
 
 	//画像の読み込み
-	image = LoadGraph("Resource/images/car1pol.bmp");
+	image = LoadGraph("Resource/images/neko.png");
 
 	//エラーチェック
 	if (image == -1)
@@ -50,7 +50,7 @@ void Player::Update()
 	}
 
 	//食料ゲージの減少
-	hp--;
+	hp -= 1 + ((speed - 1) * 0.2);
 
 	//移動処理
 	Movement();
@@ -177,8 +177,8 @@ void Player::Movement()
 }
 
 //加減速処理
-void Player::Acceleration()
+void Player::Acceleration(float add)
 {
-	speed++;
+	speed += add;
 }
 

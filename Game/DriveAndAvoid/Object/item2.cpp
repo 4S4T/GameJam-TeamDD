@@ -1,9 +1,9 @@
 #include "Item2.h"
 #include "DxLib.h"
 
-Item2::Item2(int type) : type(type), image(), speed(0.0f), location(0.0f), box_size(0.0f)
+Item2::Item2(int type) : Item_Base(type)
 {
-
+	
 }
 
 Item2::~Item2()
@@ -12,13 +12,13 @@ Item2::~Item2()
 }
 
 //初期化処理
-void Item2::Initialize()
+void Item2::Initialize(int set_lane)
 {
 
 	image = LoadGraph("Resource/images/food_maguro_saku2.png", image);
 
 	//出現させるX座標パターン取得
-	float random_y = (float)(GetRand(4) * 60 + 170);
+	float random_y = (float)(set_lane * 60 + 170);
 
 	//生成位置の設定
 	location = Vector2D(550.0f, random_y);
@@ -30,13 +30,6 @@ void Item2::Initialize()
 	speed = 4.0f; //(float)(this->type * 2);
 }
 
-void Item2::Update(float speed)
-{
-
-	//位置情報に移動量を加算する
-	location -= Vector2D(this->speed + speed, 0.0f);// + speed - 6);
-
-}
 void Item2::Draw() const
 {
 
