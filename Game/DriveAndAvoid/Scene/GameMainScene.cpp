@@ -91,9 +91,9 @@ void GameMainScene::Initialize()
 	{
 		item3 = nullptr;
 	}
-}
 	YagiFlg = FALSE;
 }
+	
 
 //XVˆ—
 eSceneType GameMainScene::Update()
